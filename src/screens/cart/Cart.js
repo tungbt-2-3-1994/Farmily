@@ -223,7 +223,13 @@ class Cart extends Component {
                             data={this.state.cartGoods}
                             renderItem={({ item }) => (
                                 <TouchableOpacity
-                                    onPress={() => { this.props.navigation.navigate('EditStack', { 'quantity': item.quantity, 'itemId': item.id }) }}
+                                    onPress={() => {
+                                        this.props.navigation.navigate('EditStack', {
+                                            'uri': item.vegetable_in_store.vegetable.images.length != 0 ? item.vegetable_in_store.vegetable.images[0] : null,
+                                            'quantity': item.quantity,
+                                            'itemId': item.id
+                                        })
+                                    }}
                                     style={styles.callout}>
                                     {item.vegetable_in_store.vegetable.images.length != 0 ?
                                         <Image style={styles.calloutPhoto} source={{ uri: item.vegetable_in_store.vegetable.images[0] }} />
@@ -253,8 +259,6 @@ class Cart extends Component {
                                                 ],
                                                 { cancelable: false }
                                             )
-
-
                                         }} style={{ position: 'absolute', right: 6, top: 1 }}>
                                             <Icon name='cancel' color='red' size={25} />
                                         </TouchableOpacity>
@@ -264,9 +268,14 @@ class Cart extends Component {
                             keyExtractor={item => item.id}
                             ListEmptyComponent={this.emptyListComponent.bind(this)}
                         />
-                        <View style={{ flexDirection: 'row', flex: 0.1, marginBottom: 50, justifyContent: 'space-between' }}>
+                        <View style={{ flexDirection: 'row', flex: 0.1, marginBottom: 53, justifyContent: 'space-between' }}>
                             <Text></Text>
-                            <Text style={{ color: 'red', fontFamily: 'Baskerville-BoldItalic', fontSize: 20, paddingRight: 10, paddingBottom: 5 }}>Tổng: {this.state.price} đồng</Text>
+                            <Text>
+                                <Text>Tổng: </Text>
+                                <Text style={{ color: 'red', fontFamily: 'Baskerville-BoldItalic', fontSize: 20, paddingRight: 10, paddingBottom: 5 }}>{this.state.price} </Text>
+                                <Text>đồng</Text>
+                            </Text>
+
                         </View>
 
                         <View style={styles.checkout}>

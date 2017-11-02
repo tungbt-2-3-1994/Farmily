@@ -95,7 +95,7 @@ class Welcome extends Component {
                     source={require('../img/logo.png')}
                 />
                 <View style={css.auth_content}>
-                    <Text style={{ fontFamily: 'Baskerville-BoldItalic', fontSize: 20, backgroundColor: 'transparent', color: 'white' }}>Chào mừng bạn đến với Farmily</Text>
+                    {/* <Text style={{ fontFamily: 'Baskerville-BoldItalic', fontSize: 20, backgroundColor: 'transparent', color: 'white' }}>Chào mừng bạn đến với Farmily</Text> */}
                     <ActivityIndicator
                         animating={this.state.loadingStatus}
                         color='red'

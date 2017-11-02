@@ -158,7 +158,7 @@ class Menu extends Component {
                                     <TouchableOpacity style={styles.flatItem} onPress={() => {
                                         let { vegetable } = this.props;
                                         this.props.updateMenu(vegetable);
-                                        this.props.navigation.navigate('EditDir', { 'data': index });
+                                        this.props.navigation.navigate('EditDir', { 'data': index, 'uri': item.images.length != 0 ? item.images[0] : null });
                                     }}>
                                         {item.images.length !== 0 ?
                                             <Image source={{ uri: item.images[0] }} style={styles.flatItemFood} />

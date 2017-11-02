@@ -133,9 +133,9 @@ class Account extends Component {
         let avatarView;
         if (this.props.loggedIn.loggedIn) {
             if (this.props.user.user.avatar_url != null) {
-                avatarView = <Image style={{ borderColor: '#CACACA', borderWidth: 1, width: width / 2, height: width / 2, borderRadius: width / 4, resizeMode: 'contain', marginBottom: 10 }} source={{ uri: this.props.user.user.avatar_url }} />;
+                avatarView = <Image style={{ width: width / 2, height: width / 2, borderRadius: width / 4, resizeMode: 'contain', marginBottom: 10 }} source={{ uri: this.props.user.user.avatar_url }} />;
             } else {
-                avatarView = <Image style={{ borderColor: '#CACACA', borderWidth: 1, width: width / 2, height: width / 2, borderRadius: width / 4, resizeMode: 'contain', marginBottom: 10 }} source={require('../../img/normalAcc.png')} />;
+                avatarView = <Image style={{ width: width / 2, height: width / 2, borderRadius: width / 4, resizeMode: 'contain', marginBottom: 10 }} source={require('../../img/normalAcc.png')} />;
             }
         }
 
@@ -147,19 +147,30 @@ class Account extends Component {
                         {avatarView}
                     </View>
                     <View style={{ backgroundColor: 'white', margin: 10, borderRadius: 5, padding: 10 }}>
-                        <Text style={{ fontFamily: 'Baskerville-BoldItalic', fontSize: 18 }}>
-                            Tên: {this.props.user.user !== null ? this.props.user.user.name : null}
+                        <Text>
+                            <Text>Tên: </Text>
+                            <Text style={{ fontFamily: 'Baskerville-BoldItalic', fontSize: 18 }}>
+                                {this.props.user.user !== null ? this.props.user.user.name : null}
+                            </Text>
                         </Text>
                     </View>
                     <View style={{ backgroundColor: 'white', margin: 10, borderRadius: 5, padding: 10 }}>
-                        <Text style={{ fontFamily: 'Baskerville-BoldItalic', fontSize: 18 }}>
-                            Phone Number: {this.props.user.user !== null ? this.props.user.user.phone_number : 'Không có'}
+                        <Text>
+                            <Text>Số điện thoại: </Text>
+                            <Text style={{ fontFamily: 'Baskerville-BoldItalic', fontSize: 18 }}>
+                                {this.props.user.user !== null ? this.props.user.user.phone_number : 'Không có'}
+                            </Text>
                         </Text>
+
                     </View>
                     <View style={{ backgroundColor: 'white', margin: 10, borderRadius: 5, padding: 10 }}>
-                        <Text style={{ fontFamily: 'Baskerville-BoldItalic', fontSize: 18 }}>
-                            Email: {this.props.user.user !== null ? this.props.user.user.email : 'Không có'}
+                        <Text>
+                            <Text>Email: </Text>
+                            <Text style={{ fontFamily: 'Baskerville-BoldItalic', fontSize: 18 }}>
+                                {this.props.user.user !== null ? this.props.user.user.email : 'Không có'}
+                            </Text>
                         </Text>
+
                     </View>
                     <Container>
                         <ButtonLogin

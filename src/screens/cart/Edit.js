@@ -4,7 +4,7 @@ import {
     Text,
     Image,
     TextInput,
-    Button, TouchableOpacity, Alert
+    Button, TouchableOpacity, Alert, Dimensions
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 
 import { updateItemInCart } from '../../actions';
 
+const { width, height } = Dimensions.get('window');
 
 class Edit extends Component {
 
@@ -41,19 +42,49 @@ class Edit extends Component {
         }
     }
 
+    onIncrease = () => {
+        this.setState({
+            text: this.state.text + 1
+        });
+    }
+
+    onDecrease = () => {
+        this.setState({
+            text: this.state.text - 1
+        });
+    }
+
+
     render() {
+        var uri = this.props.navigation.state.params.uri;
+        let viewImage;
+        if (uri == null) {
+            viewImage = (<Image style={{ width: width, height: height / 3, resizeMode: 'stretch' }} source={require('../../img/noImage.jpg')} />);
+        } else {
+            viewImage = (<Image style={{ width: width, height: height / 3, resizeMode: 'stretch' }} source={{ uri: uri }} />);
+        }
         return (
             <View style={styles.container}>
-                <Text style={{ fontSize: 16, fontFamily: 'Baskerville-BoldItalic' }}>Số lượng hàng hóa bạn muốn mua</Text>
-                <TextInput
-                    style={{ marginTop: 10, fontSize: 24, borderRadius: 5, borderColor: '#CACACA', borderWidth: 2, width: 100 }}
-                    placeholder='Nhập số lượng'
-                    onChangeText={(text) => this.setState({ text })}
-                    value={this.state.text + ''}
-                    keyboardType='numeric'
-                    textAlign='center'
-                    underlineColorAndroid='transparent'
-                />
+                {viewImage}
+                <Text style={{ marginTop: 10, fontSize: 16, fontFamily: 'Baskerville-BoldItalic' }}>Số lượng hàng hóa bạn muốn mua</Text>
+                <View style={{ marginTop: 10, flexDirection: 'row' }}>
+                    <TouchableOpacity onPress={() => this.onDecrease()} style={{ marginRight: 10 }}>
+                        <Text style={{ color: 'red', fontSize: 30 }}>-</Text>
+                    </TouchableOpacity>
+                    <TextInput
+                        style={{ fontSize: 24, borderRadius: 5, borderColor: '#CACACA', borderWidth: 2, width: 100 }}
+                        placeholder='Nhập số lượng'
+                        onChangeText={(text) => this.setState({ text })}
+                        value={this.state.text + ''}
+                        keyboardType='numeric'
+                        textAlign='center'
+                        underlineColorAndroid='transparent'
+                    />
+                    <TouchableOpacity onPress={() => this.onIncrease()} style={{ marginLeft: 10 }}>
+                        <Text style={{ color: '#388E3C', fontSize: 30 }}>+</Text>
+                    </TouchableOpacity>
+                </View>
+
                 <TouchableOpacity style={styles.accept} onPress={() => this.updateCart()}>
                     <Text style={{ color: 'white', fontSize: 20, fontFamily: 'Baskerville-BoldItalic' }}>Đồng ý</Text>
                 </TouchableOpacity>
@@ -65,7 +96,6 @@ class Edit extends Component {
 const styles = {
     container: {
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'white',
     },
