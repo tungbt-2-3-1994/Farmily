@@ -8,11 +8,13 @@ import {
     TouchableOpacity,
     TextInput,
     ScrollView,
-    Alert, Dimensions, NetInfo, StatusBar
+    Alert, Dimensions, NetInfo, StatusBar, AppState
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconFont from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
+
+import Permissions from 'react-native-permissions';
 
 import { getCheckoutCart, getCurrentLocation, getAllVegetables, getAllStores, goToMain, connectionState } from '../actions';
 
@@ -29,12 +31,31 @@ class Welcome extends Component {
         }
     }
 
+    // update permissions when app comes back from settings
+    // _handleAppStateChange(appState) {
+    //     if (appState == 'active') {
+    //         this._updatePermissions(this.state.types)
+    //     }
+    // }
+
     componentWillMount() {
         this.props.getAllStores();
         this.props.getCurrentLocation();
         this.props.getAllVegetables();
         // this.props.getCheckoutCart();
     }
+
+    // _handleAppStateChange(appState) {
+    //     if (appState == 'active') {
+    //         this._updatePermissions(this.state.types)
+    //     }
+    // }
+    _openSettings() {
+        return Permissions.openSettings()
+            .then(() => alert('back to app!!'))
+    }
+
+    
 
     componentDidMount() {
         NetInfo.isConnected.addEventListener('change', this._handleConnectionChange);
@@ -50,11 +71,12 @@ class Welcome extends Component {
                     ]
                 );
             }
-        }, 2000);
+        }, 5000);
     }
 
     componentWillUnmount() {
         NetInfo.isConnected.removeEventListener('change', this._handleConnectionChange);
+        // AppState.removeEventListener('change1', this._handleAppStateChange.bind(this));
     }
 
     _handleConnectionChange = (isConnected) => {
