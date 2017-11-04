@@ -12,7 +12,18 @@ export const getCurrentLocation = () => {
                     payload: position
                 });
             },
-            (error) => console.log(error.message),
+            (error) => {
+                console.log(error.message);
+                // Alert.alert(
+                //     'Thông báo',
+                //     'Ứng dụng không thể truy cập vị trí của bạn! Vui lòng kiểm tra lại và cấp quyền truy cập cho ứng dụng!',
+                //     [
+                //         { text: 'Không', onPress: () => console.log('permission denied') },
+                //         this.state.locationPermission === 'undetermined' ?
+                //             { text: 'Đồng ý', onPress: this._requestCameraPermission() }
+                //             : { text: 'Mở cài đặt', onPress: Permissions.canOpenSettings() ? Permissions.openSettings : null }
+                //     ])
+            },
             { timeout: 20000, maximumAge: 1000 }
         );
     }

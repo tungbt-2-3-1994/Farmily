@@ -243,9 +243,9 @@ class Cart extends Component {
                                             {/* <Icon name='attach-money' size={20} color='#7BC477' /> */}
                                             <Text style={{ marginLeft: 5, fontSize: 16, color: '#7BC477' }}>Giá: </Text>
                                             {/* <Text style={{ fontSize: 16, color: '#7BC477' }}>:</Text> */}
-                                            <Text style={{ marginLeft: 5, fontSize: 16 }}>{item.vegetable_in_store.price} nghìn đồng</Text>
+                                            <Text style={{ marginLeft: 5, fontSize: 16 }}>{item.vegetable_in_store.price} đồng</Text>
                                         </View>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 2 }}>
                                             <Text style={{ marginLeft: 5, fontSize: 16, color: '#7BC477' }}>Số lượng: </Text>
                                             <Text style={{ marginLeft: 5, fontSize: 16 }}>{item.quantity} kg</Text>
                                         </View>
@@ -350,7 +350,6 @@ const styles = {
         justifyContent: 'center',
         alignSelf: 'center',
         resizeMode: 'stretch',
-        borderRadius: 30
     },
     calloutTitle: {
         fontSize: 18,
@@ -366,6 +365,7 @@ const styles = {
         flexDirection: 'column',
         justifyContent: 'space-between',
         flex: 0.8,
+        paddingBottom: 3
     },
 };
 

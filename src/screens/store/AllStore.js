@@ -331,7 +331,7 @@ class AllStore extends Component {
                         <View style={{ width: width, height: 170 }}>
                             <Text style={{ paddingLeft: 10, fontSize: 16, color: 'rgba(180, 280, 200, 0.7)' }}>Các cửa hàng xung quanh bạn</Text>
                             <FlatList
-                                style={{ backgroundColor: 'rgba(131, 199, 92, 0.5)', margin: 5 }}
+                                style={{ backgroundColor: 'rgba(131, 199, 92, 0.8)', margin: 5 }}
                                 data={this.props.stores}
                                 renderItem={({ item }) => (
                                     <TouchableOpacity onPress={() => this.clickItem(item)} style={{ alignItems: 'center', padding: 5, borderRadius: 5, borderWidth: 1, borderColor: 'blue', flexDirection: 'row', margin: 5 }}>

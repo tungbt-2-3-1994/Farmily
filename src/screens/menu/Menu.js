@@ -4,7 +4,7 @@ import {
     View,
     Text,
     Image,
-    Button, TouchableOpacity, FlatList, Dimensions, Alert, Platform
+    Button, TouchableOpacity, FlatList, Dimensions, Alert, Platform, ActivityIndicator
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -23,6 +23,7 @@ class Menu extends Component {
             vegetables: [],
             temp: 0,
             visible: false,
+            loading: false
         }
     }
 
@@ -46,11 +47,10 @@ class Menu extends Component {
 
 
     componentWillReceiveProps(nextProps) {
-        // if (!nextProps.loading) {
-        //     this.setState({
-        //         vegetables: nextProps.vegetable
-        //     });
-        // }
+        if (!nextProps.loadingMenu) {
+            console.log('asjas');
+            this.setState({ loading: false });
+        }
     }
 
     // getMenu = () => {
@@ -121,24 +121,11 @@ class Menu extends Component {
             // console.log('quantity', quantity);
 
             let { coords } = this.props.userInfor;
-
+            this.setState({ loading: true });
             this.props.getCompatibleStore(coords.latitude, coords.longitude, data, quantity);
-
         }
     }
 
-    // shouldComponentUpdate() {
-    //     console.log('asas');
-    //     this.setState({
-    //         vegetables: this.props.vegetable
-    //     });
-    //     return true;
-    // }
-
-    showScaleAnimation(index) {
-
-
-    }
 
     render() {
         // console.log('re render')
@@ -156,9 +143,10 @@ class Menu extends Component {
                                 data={this.props.vegetable.vegetables}
                                 renderItem={({ item, index }) => (
                                     <TouchableOpacity style={styles.flatItem} onPress={() => {
+                                        console.log(item);
                                         let { vegetable } = this.props;
                                         this.props.updateMenu(vegetable);
-                                        this.props.navigation.navigate('EditDir', { 'data': index, 'uri': item.images.length != 0 ? item.images[0] : null });
+                                        this.props.navigation.navigate('EditDir', { 'quantity': item.quantity, 'data': index, 'uri': item.images.length != 0 ? item.images[0] : null });
                                     }}>
                                         {item.images.length !== 0 ?
                                             <Image source={{ uri: item.images[0] }} style={styles.flatItemFood} />
@@ -186,6 +174,12 @@ class Menu extends Component {
                             }}>
                                 <Icon name='shopping-cart' size={25} color='white' />
                             </TouchableOpacity>
+                            {this.state.loading &&
+                                <ActivityIndicator
+                                    color='red'
+                                    size="large"
+                                    style={styles.activityIndicator} />
+                            }
                         </View>
                     )
                     : <View><Text></Text></View>
@@ -198,6 +192,10 @@ class Menu extends Component {
 }
 
 const styles = {
+    activityIndicator: {
+        position: 'absolute', top: 0, left: 0,
+        right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center'
+    },
     floatingBtn: { justifyContent: 'center', alignItems: 'center', position: 'absolute', right: 10, bottom: 10, width: width / 7, height: width / 7, borderRadius: width / 14, backgroundColor: 'rgba(255, 0, 0, 0.3)' },
     container: {
         flex: 1,
@@ -235,6 +233,7 @@ const mapStateToProps = (state) => {
         vegetable: state.vegetable,
         loading: state.vegetable.loading,
         menu: state.menu || {},
+        loadingMenu: state.menu.loading
     });
 }
 

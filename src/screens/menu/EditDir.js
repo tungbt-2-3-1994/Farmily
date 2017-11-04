@@ -19,7 +19,7 @@ class EditDir extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            text: 1
+            text: this.props.navigation.state.params.quantity
         }
     }
 
@@ -52,13 +52,13 @@ class EditDir extends Component {
 
     onIncrease = () => {
         this.setState({
-            text: this.state.text + 1
+            text: parseInt(this.state.text) + 1
         });
     }
 
     onDecrease = () => {
         this.setState({
-            text: this.state.text - 1
+            text: parseInt(this.state.text) - 1
         });
     }
 

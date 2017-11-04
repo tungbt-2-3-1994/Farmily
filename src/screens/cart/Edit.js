@@ -44,13 +44,13 @@ class Edit extends Component {
 
     onIncrease = () => {
         this.setState({
-            text: this.state.text + 1
+            text: parseInt(this.state.text) + 1
         });
     }
 
     onDecrease = () => {
         this.setState({
-            text: this.state.text - 1
+            text: parseInt(this.state.text) - 1
         });
     }
 

@@ -8,8 +8,11 @@ import {
     TouchableOpacity,
     TextInput,
     ScrollView,
-    Alert, Dimensions, NetInfo, StatusBar, AppState
+    Alert, Dimensions, NetInfo, StatusBar, AppState, BackHandler, Platform
 } from 'react-native';
+
+import RNExitApp from 'react-native-exit-app';
+
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IconFont from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
@@ -32,30 +35,86 @@ class Welcome extends Component {
     }
 
     // update permissions when app comes back from settings
-    // _handleAppStateChange(appState) {
-    //     if (appState == 'active') {
-    //         this._updatePermissions(this.state.types)
-    //     }
-    // }
+    _handleAppStateChange(appState) {
+        if (appState == 'active') {
+            this._updatePermissions(this.state.types)
+        }
+    }
 
     componentWillMount() {
         this.props.getAllStores();
         this.props.getCurrentLocation();
         this.props.getAllVegetables();
-        // this.props.getCheckoutCart();
+
     }
 
-    // _handleAppStateChange(appState) {
-    //     if (appState == 'active') {
-    //         this._updatePermissions(this.state.types)
-    //     }
+    // _openSettings() {
+    //     return Permissions.openSettings()
+    //         .then(() => alert('back to app!!'))
     // }
-    _openSettings() {
-        return Permissions.openSettings()
-            .then(() => alert('back to app!!'))
-    }
 
-    
+    _requestPermission = () => {
+        console.log('request');
+        Permissions.request('location')
+            .then(response => {
+                console.log('res', response);
+                this.setState({ locationPermission: response })
+                if (response == 'authorized') {
+                    this.props.getCurrentLocation();
+                } else {
+                    (Platform.OS === 'ios') ? RNExitApp.exitApp() : BackHandler.exitApp();
+                }
+            });
+    }
+    // _requestCameraPermission = () => {
+    //     Permissions.request('camera')
+    //         .then(response => {
+    //             this.setState({ cameraPermission: response })
+    //         });
+    // }
+
+    // _alertForLocationPermission = () => {
+    //     Alert.alert(
+    //         'Yêu cầu quyền truy cập!',
+    //         'Ứng dụng cần truy cập vị trí của bạn!',
+    //         [
+    //             {
+    //                 text: 'Không', onPress: () => {
+    //                     (Platform.OS === 'ios') ? RNExitApp.exitApp() : BackHandler.exitApp();
+    //                 }
+    //             },
+    //             this.state.locationPermission === 'undetermined' ?
+    //                 { text: 'Đồng ý', onPress: this._requestPermission() }
+    //                 : { text: 'Mở Settings', onPress: Permissions.canOpenSettings() ? Permissions.openSettings : null }
+    //         ]
+    //     )
+    // }
+    // _alertForCameraPermission = () => {
+    //     Alert.alert(
+    //         'Yêu cầu quyền truy cập!',
+    //         'Ứng dụng cần truy cập máy ảnh của bạn!',
+    //         [
+    //             { text: 'Không', onPress: () => console.log('permission denied') },
+    //             this.state.locationPermission === 'undetermined' ?
+    //                 { text: 'Đồng ý', onPress: this._requestCameraPermission() }
+    //                 : { text: 'Mở cài đặt', onPress: Permissions.canOpenSettings() ? Permissions.openSettings : null }
+    //         ]
+    //     )
+    // }
+    _alertForLocationPermission = () => {
+        Alert.alert(
+            'Yêu cầu quyền truy cập!',
+            'Ứng dụng cần truy cập vị trí của bạn!',
+            [
+                {
+                    text: 'Không', onPress: () => {
+                        (Platform.OS === 'ios') ? RNExitApp.exitApp() : BackHandler.exitApp();
+                    }
+                },
+                { text: 'Đồng ý', onPress: this._requestPermission() }
+            ]
+        )
+    }
 
     componentDidMount() {
         NetInfo.isConnected.addEventListener('change', this._handleConnectionChange);
@@ -66,12 +125,24 @@ class Welcome extends Component {
                     [
                         {
                             text: 'OK',
-                            text: 'Cancel'
                         },
                     ]
                 );
             }
         }, 5000);
+        // Permissions.check('location')
+        //     .then(response => {
+        //         console.log('location', response);
+        //         //response is an object mapping type to permission
+        //         // this.setState({
+        //         //     locationPermission: response,
+        //         // });
+        //         if (response == 'authorized') {
+        //             this.props.getCurrentLocation();
+        //         } else {
+        //             this._alertForLocationPermission();
+        //         }
+        //     });
     }
 
     componentWillUnmount() {
