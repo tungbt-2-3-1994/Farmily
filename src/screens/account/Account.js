@@ -135,42 +135,37 @@ class Account extends Component {
             if (this.props.user.user.avatar_url != null) {
                 avatarView = <Image style={{ width: width / 2, height: width / 2, borderRadius: width / 4, resizeMode: 'contain', marginBottom: 10 }} source={{ uri: this.props.user.user.avatar_url }} />;
             } else {
-                avatarView = <Image style={{ width: width / 2, height: width / 2, borderRadius: width / 4, resizeMode: 'contain', marginBottom: 10 }} source={require('../../img/normalAcc.png')} />;
+                avatarView = <Image style={{ width: width / 2, height: width / 2, borderRadius: width / 4, resizeMode: 'contain', marginBottom: 10 }} source={require('../../img/avatar.png')} />;
             }
         }
 
         if (this.props.loggedIn.loggedIn) {
             loginFrom = (
                 <ScrollView style={{ flex: 1, flexDirection: 'column' }}>
-                    <View style={{ justifyContent: 'center', alignItems: 'center', width: width, height: width * 3 / 5, backgroundColor: '#00FFFF' }}>
+                    <View style={{ justifyContent: 'center', alignItems: 'center', width: width, height: width * 7 / 10, backgroundColor: '#4aaf5d', paddingTop: 30, paddingBottom: 30 }}>
                         {/* <Image style={{ borderColor: '#CACACA', borderWidth: 1, width: width / 2, height: width / 2, borderRadius: width / 4, resizeMode: 'contain', marginBottom: 10 }} source={require('../../img/noImage.jpg')} /> */}
                         {avatarView}
-                    </View>
-                    <View style={{ backgroundColor: 'white', margin: 10, borderRadius: 5, padding: 10 }}>
-                        <Text>
-                            <Text>Tên: </Text>
-                            <Text style={{ fontFamily: 'Baskerville-BoldItalic', fontSize: 18 }}>
-                                {this.props.user.user !== null ? this.props.user.user.name : null}
-                            </Text>
+                        <Text style={{ fontSize: 20, color: 'white' }}>
+                            {this.props.user.user !== null ? this.props.user.user.name : null}
                         </Text>
                     </View>
-                    <View style={{ backgroundColor: 'white', margin: 10, borderRadius: 5, padding: 10 }}>
-                        <Text>
-                            <Text>Số điện thoại: </Text>
-                            <Text style={{ fontFamily: 'Baskerville-BoldItalic', fontSize: 18 }}>
+                    <View style={{ flexDirection: 'row', padding: 5, marginTop: 10, marginLeft: 10, marginRight: 10, backgroundColor: 'white' }}>
+                        <Icon name='phone' color='#368e47' size={50} />
+                        <View style={{ flexDirection: 'column', marginLeft: 10, justifyContent: 'space-between' }}>
+                            <Text style={{ color: '#009689', fontSize: 18 }}>Số điện thoại</Text>
+                            <Text style={{ fontSize: 18 }}>
                                 {this.props.user.user !== null ? this.props.user.user.phone_number : 'Không có'}
                             </Text>
-                        </Text>
-
+                        </View>
                     </View>
-                    <View style={{ backgroundColor: 'white', margin: 10, borderRadius: 5, padding: 10 }}>
-                        <Text>
-                            <Text>Email: </Text>
-                            <Text style={{ fontFamily: 'Baskerville-BoldItalic', fontSize: 18 }}>
+                    <View style={{ flexDirection: 'row', padding: 5, marginTop: 10, marginLeft: 10, marginRight: 10, backgroundColor: 'white' }}>
+                        <Icon name='mail-outline' color='#368e47' size={50} />
+                        <View style={{ flexDirection: 'column', marginLeft: 10, justifyContent: 'space-between' }}>
+                            <Text style={{ color: '#009689', fontSize: 18 }}>Email</Text>
+                            <Text style={{ fontSize: 18 }}>
                                 {this.props.user.user !== null ? this.props.user.user.email : 'Không có'}
                             </Text>
-                        </Text>
-
+                        </View>
                     </View>
                     <Container>
                         <ButtonLogin
