@@ -101,12 +101,10 @@ class AllStore extends Component {
     }
 
     componentWillMount() {
+        this.props.getCurrentLocation();
         this.setState({
             markers: this.props.stores
         });
-        // console.log('start to call Api', this.props.isConnected.isConnected);
-        // this.props.getCurrentLocation();
-        // this.props.getAllStores();
         this.panResponder = PanResponder.create({
             onStartShouldSetPanResponder: (event, gestureState) => true,
             onPanResponderGrant: this._onPanRespondGrant.bind(this),
@@ -114,8 +112,6 @@ class AllStore extends Component {
     }
 
     _onPanRespondGrant(event, gestureState) {
-        // console.log('locationX', event.nativeEvent.locationX);
-        // console.log('pageX', event.nativeEvent.pageX);
         if (event.nativeEvent.locationX === event.nativeEvent.pageX) {
             this.setState({ toogle: false });
         }
@@ -453,4 +449,4 @@ const mapStateToProps = (state) => {
     });
 }
 
-export default connect(mapStateToProps, { getCurrentLocation, connectionState, getNearByStore, untoggleSearch, getCurrentLocation, getAllStores, searchStoreByAddOrInfo, toggleSearch })(AllStore);
+export default connect(mapStateToProps, { getCurrentLocation, connectionState, getNearByStore, untoggleSearch, getAllStores, searchStoreByAddOrInfo, toggleSearch })(AllStore);
