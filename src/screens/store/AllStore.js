@@ -434,7 +434,7 @@ class AllStore extends Component {
 
 const styles = {
     floatingBtn: { justifyContent: 'center', alignItems: 'center', position: 'absolute', right: 10, bottom: 10, width: width / 7, height: width / 7, borderRadius: width / 14, backgroundColor: 'rgba(255, 0, 0, 0.3)' },
-    floatingBtn2: { justifyContent: 'center', alignItems: 'center', position: 'absolute', left: 10, bottom: 10, width: width / 7, height: width / 7, borderRadius: width / 14, backgroundColor: 'rgba(255, 0, 0, 0.3)' },
+    floatingBtn2: { justifyContent: 'center', alignItems: 'center', position: 'absolute', right: 10, bottom: 20 + width / 7, width: width / 7, height: width / 7, borderRadius: width / 14, backgroundColor: 'rgba(255, 0, 0, 0.3)' },
     flItem: { flex: 1, width: width, height: 40, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' },
     activityIndicator: {
         position: 'absolute', top: 0, left: 0,
