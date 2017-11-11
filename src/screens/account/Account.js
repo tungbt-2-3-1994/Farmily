@@ -141,7 +141,7 @@ class Account extends Component {
 
         if (this.props.loggedIn.loggedIn) {
             loginFrom = (
-                <ScrollView style={{ flex: 1, flexDirection: 'column' }}>
+                <ScrollView style={{ flexDirection: 'column' }}>
                     <View style={{ justifyContent: 'center', alignItems: 'center', width: width, height: width * 7 / 10, backgroundColor: '#4aaf5d', paddingTop: 30, paddingBottom: 30 }}>
                         {/* <Image style={{ borderColor: '#CACACA', borderWidth: 1, width: width / 2, height: width / 2, borderRadius: width / 4, resizeMode: 'contain', marginBottom: 10 }} source={require('../../img/noImage.jpg')} /> */}
                         {avatarView}
@@ -167,19 +167,18 @@ class Account extends Component {
                             </Text>
                         </View>
                     </View>
-                    <Container>
-                        <ButtonLogin
-                            styles={{ button: styles.transparentButtonOut }}
-                            onPress={() => {
-                                this.setState({ animating: true });
-                                this.props.logout()
-                            }}
-                        >
-                            <View style={styles.inline}>
-                                <Text style={[styles.buttonBlueText, styles.buttonBigText]}>  Đăng xuất </Text>
-                            </View>
-                        </ButtonLogin>
-                    </Container>
+
+                    <TouchableOpacity
+                        style={styles.transparentButtonOut}
+                        onPress={() => {
+                            this.setState({ animating: true });
+                            this.props.logout()
+                        }}
+                    >
+                        <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 25 }}>Đăng xuất</Text>
+                        <Image style={{ marginLeft: 10, width: 30, height: 30 }} source={require('../../img/signOut.png')} />
+                    </TouchableOpacity>
+
                 </ScrollView>
             );
         } else {
@@ -301,10 +300,13 @@ const styles = {
     },
     transparentButtonOut: {
         marginTop: 30,
-        borderColor: '#3B5699',
-        borderWidth: 2,
         borderRadius: 5,
-        marginLeft: 100, marginRight: 100,
+        flexDirection: 'row',
+        backgroundColor: '#009689',
+        padding: 10,
+        width: 200,
+        justifyContent: 'center',
+        alignSelf: 'center'
     },
     buttonBlueText: {
         fontSize: 14,
