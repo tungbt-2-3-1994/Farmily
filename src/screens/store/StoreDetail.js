@@ -19,11 +19,15 @@ const PARALLAX_HEADER_HEIGHT = 150;
 const STICKY_HEADER_HEIGHT = 50;
 const AVATAR_SIZE = 120;
 
+import ImageSlider from 'react-native-image-slider';
+
 
 class StoreDetail extends Component {
 
     state = {
-        uri: ''
+        uri: '',
+        position: 0,
+        interval: null
     }
 
     static navigationOptions = {
@@ -37,22 +41,66 @@ class StoreDetail extends Component {
     }
 
     componentDidMount() {
-        // console.log('params', this.props.navigation.state.params.marker);
         const { id } = this.props.navigation.state.params.marker;
         this.props.getStoreById(id);
     }
 
     renderForeground() {
-        const { images } = this.props.navigation.state.params.marker;
-        return (
+        // const { images } = this.props.navigation.state.params.marker;
+        // return (
+        //     <View style={styles.foreground}>
+        //         {images.length !== 0 ? (
+        //             <Image source={{ uri: 'http://farm.ongnhuahdpe.com'.concat(images[0].src) }} style={{ width: window.width, height: PARALLAX_HEADER_HEIGHT, resizeMode: 'stretch' }} />
+        //         ) : (
+        //                 <Image source={require('../../img/storef.jpg')} style={{ width: window.width, height: PARALLAX_HEADER_HEIGHT, resizeMode: 'stretch' }} />
+        //             )}
+        //     </View>
+        // );
+        if (this.props.loading == false) {
+            let { images } = this.props.detailStore;
+
+            var data = [];
+
+            images.map((image) => {
+                data.push('http://farm.ongnhuahdpe.com'.concat(image));
+                return data;
+            });
+
+            return (
+                <View style={styles.foreground}>
+                    <ImageSlider
+                        images={data}
+                        style={{ backgroundColor: 'white' }}
+                        position={this.state.position}
+                        onPositionChanged={position => this.setState({ position })} />
+                </View>
+            );
+        } else {
             <View style={styles.foreground}>
-                {images.length !== 0 ? (
-                    <Image source={{ uri: 'http://farm.ongnhuahdpe.com'.concat(images[0].src) }} style={{ width: window.width, height: PARALLAX_HEADER_HEIGHT, resizeMode: 'stretch' }} />
-                ) : (
-                        <Image source={require('../../img/storef.jpg')} style={{ width: window.width, height: PARALLAX_HEADER_HEIGHT, resizeMode: 'stretch' }} />
-                    )}
+                <ActivityIndicator
+                    color='red'
+                    size="large"
+                />
             </View>
-        );
+        }
+
+    }
+
+    componentWillMount() {
+        setTimeout(() => {
+            let { images } = this.props.detailStore;
+            console.log(images);
+            this.setState({
+                interval: setInterval(() => {
+                    this.setState({ position: this.state.position === images.length - 1 ? 0 : this.state.position + 1 });
+                }, 5000)
+            });
+        }, 2000);
+
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.state.interval);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -100,7 +148,7 @@ class StoreDetail extends Component {
                     renderStickyHeader={this.renderStickyHeader.bind(this)}
                 >
                     <View style={styles.container}>
-                        <View style={{ backgroundColor: '#FFFFFF', marginTop: 5 }}>
+                        <View style={{ backgroundColor: '#FFFFFF', marginTop: 5, marginBottom: 5, padding: 10 }}>
                             <Text style={styles.text}>Thông tin cửa hàng</Text>
                             <Infor infor={marker.address} icon='location-on' />
                             <Infor infor={marker.info} icon='info-outline' />
@@ -144,7 +192,7 @@ const styles = {
         backgroundColor: '#DEDEDE'
     },
     text: {
-        marginTop: 5,
+        marginTop: 10,
         fontSize: 18,
         fontWeight: 'bold',
         marginLeft: 10,
@@ -198,12 +246,8 @@ const styles = {
 
 const mapStateToProps = (state) => {
     return ({
-        userInfor: state.userInfor.userLocation,
-        loadingGeo: state.userInfor.loading,
-        stores: state.store.stores,
-        loadingStores: state.store.loading,
-        loggedIn: state.userInfor.loggedIn,
-        detailStore: state.detailStore.storeById
+        loading: state.detailStore.loading,
+        detailStore: state.detailStore.storeById,
     });
 }
 

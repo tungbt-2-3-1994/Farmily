@@ -51,13 +51,6 @@ class OrderItem extends Component {
     renderForeground() {
         let { images } = this.props.navigation.state.params.item;
         return (
-            // <ViewPager
-            //     ref={(viewpager) => { this.viewpager = viewpager }}
-            //     style={styles.foreground}
-            //     dataSource={this.state.dataSource}
-            //     renderPage={(item) => <Image style={styles.foreground} source={{ uri: item }} />}
-            //     isLoop={false}
-            //     autoPlay={false} />
             <View style={styles.foreground}>
                 <ImageSlider
                     images={this.props.navigation.state.params.item.images}
