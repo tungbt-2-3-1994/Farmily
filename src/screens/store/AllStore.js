@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
     View, Text, Image, TouchableOpacity, TouchableHighlight, Dimensions, ActivityIndicator,
-    FlatList, NetInfo, PanResponder, Modal, Alert, Platform
+    FlatList, NetInfo, PanResponder, Modal, Alert, Platform, AppState
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -25,6 +25,8 @@ const ASPECT_RATIO = width / height;
 
 const LATITUDE_DELTA = 0.0222;
 const LONGITUDE_DELTA = ASPECT_RATIO * LATITUDE_DELTA;
+
+import Permissions from 'react-native-permissions';
 
 var font = 'baskerville_bold_italic';
 
@@ -61,7 +63,9 @@ class AllStore extends Component {
             typing: false,
             searchData: [],
             toogle: false,
-            coords: []
+            coords: [],
+            types: [],
+            status: {},
         }
         this.onChangeTextDelayed = _.debounce(this.onChangeText.bind(this), 1000);
         this.onClearSearching = this.onClearSearching.bind(this);
@@ -134,23 +138,95 @@ class AllStore extends Component {
                 }
             });
         }
-        // if (nextProps.loadingStores.loading == false) {
-        //     this.setState({
-        //         markers: nextProps.stores
-        //     });
-        // }
     }
+    /**
+     * _________________________REQUEST LOCATION________________________________________
+     */
+
+    _requestPermission = () => {
+        Permissions.request('location')
+            .then(response => {
+                console.log(response);
+            });
+    }
+
+
+
+    _alertForLocationPermission = () => {
+        Alert.alert(
+            'Yêu cầu quyền truy cập!',
+            'Ứng dụng cần truy cập vị trí của bạn!',
+            [
+                { text: 'Không', onPress: () => console.log('permission denied') },
+                this.state.locationPermission == 'undetermined' ?
+                    { text: 'Đồng ý', onPress: this._requestPermission() }
+                    : { text: 'Mở Settings', onPress: Permissions.canOpenSettings() ? Permissions.openSettings : null }
+            ]
+        )
+    }
+
+    // _requestPermission(permission) {
+    //     var options
+
+    //     if (permission == 'location') {
+    //         options = this.state.isAlways ? 'always' : 'whenInUse'
+    //     }
+
+    //     Permissions.request(permission, options)
+    //         .then(res => {
+    //             if (res != 'authorized') {
+    //                 var buttons = [{ text: 'Cancel', style: 'cancel' }]
+    //                 if (this.state.canOpenSettings) buttons.push({ text: 'Open Settings', onPress: this._openSettings.bind(this) })
+
+    //                 Alert.alert(
+    //                     'Whoops!',
+    //                     "There was a problem getting your permission. Please enable it from settings.",
+    //                     buttons
+    //                 )
+    //             }
+    //         }).catch(e => console.warn(e))
+    // }
+
+    //update permissions when app comes back from settings
+    _handleAppStateChange(appState) {
+        if (appState == 'active') {
+            this.props.getCurrentLocation();
+        }
+    }
+
+    _openSettings() {
+        return Permissions.openSettings()
+            .then(() => alert('back to app!!'))
+    }
+
+    _updatePermissions(types) {
+        Permissions.checkMultiple(types)
+            .then(status => {
+                if (this.state.isAlways) {
+                    return Permissions.check('location', 'always')
+                        .then(location => ({ ...status, location }))
+                }
+                return status
+            })
+            .then(status => this.setState({ status }))
+    }
+
+    /**
+     * ___________________________________________________________________
+     */
 
     componentDidMount() {
         NetInfo.isConnected.addEventListener('change', this._handleConnectionChange);
+        AppState.addEventListener('change', this._handleAppStateChange.bind(this));
     }
 
     componentWillUnmount() {
         NetInfo.isConnected.removeEventListener('change', this._handleConnectionChange);
+        AppState.removeEventListener('change', this._handleAppStateChange.bind(this));
     }
 
     _handleConnectionChange = (isConnected) => {
-        console.log('e', isConnected);
+        // console.log('e', isConnected);
         this.props.connectionState(isConnected);
     };
 
@@ -273,16 +349,6 @@ class AllStore extends Component {
 
         return (
             <View style={styles.container}>
-                {/* {this.state.animating &&
-                    <ActivityIndicator
-                        color='red'
-                        size="large"
-                        style={styles.activityIndicator} />
-                } */}
-                {/* <Image
-                    style={{ width: 0, height: 0 }}
-                    source={require('../../img/store.png')}
-                /> */}
                 <MapView
                     ref='map'
                     provider={PROVIDER_GOOGLE}
@@ -353,9 +419,9 @@ class AllStore extends Component {
                     <Icon name='zoom-in' size={25} color='white' />
                 </TouchableOpacity>
 
-                {/* <TouchableOpacity style={styles.floatingBtn2} onPress={() => { this.toogleAll() }}>
-                    <Icon name='zoom-out' size={25} color='white' />
-                </TouchableOpacity> */}
+                <TouchableOpacity style={styles.floatingBtn2} onPress={() => { this._alertForLocationPermission() }}>
+                    <Icon name='location-searching' size={25} color='white' />
+                </TouchableOpacity>
                 {!this.props.isConnected.isConnected &&
                     <View style={styles.activityIndicator}>
                         <Text>Loading</Text>
@@ -368,7 +434,7 @@ class AllStore extends Component {
 
 const styles = {
     floatingBtn: { justifyContent: 'center', alignItems: 'center', position: 'absolute', right: 10, bottom: 10, width: width / 7, height: width / 7, borderRadius: width / 14, backgroundColor: 'rgba(255, 0, 0, 0.3)' },
-    floatingBtn2: { justifyContent: 'center', alignItems: 'center', position: 'absolute', right: 10, bottom: 20 + width / 7, width: width / 7, height: width / 7, borderRadius: width / 14, backgroundColor: 'rgba(255, 0, 0, 0.3)' },
+    floatingBtn2: { justifyContent: 'center', alignItems: 'center', position: 'absolute', left: 10, bottom: 10, width: width / 7, height: width / 7, borderRadius: width / 14, backgroundColor: 'rgba(255, 0, 0, 0.3)' },
     flItem: { flex: 1, width: width, height: 40, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' },
     activityIndicator: {
         position: 'absolute', top: 0, left: 0,
@@ -406,7 +472,7 @@ const styles = {
 };
 
 const mapStateToProps = (state) => {
-    console.log('asas', state.network.isConnected);
+    // console.log('asas', state.network.isConnected);
     return ({
         userInfor: state.userInfor.userLocation,
         loadingGeo: state.userInfor.loading,
@@ -419,4 +485,4 @@ const mapStateToProps = (state) => {
     });
 }
 
-export default connect(mapStateToProps, { connectionState, getNearByStore, untoggleSearch, getCurrentLocation, getAllStores, searchStoreByAddOrInfo, toggleSearch })(AllStore);
+export default connect(mapStateToProps, { getCurrentLocation, connectionState, getNearByStore, untoggleSearch, getCurrentLocation, getAllStores, searchStoreByAddOrInfo, toggleSearch })(AllStore);

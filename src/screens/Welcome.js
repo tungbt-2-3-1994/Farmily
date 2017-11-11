@@ -30,16 +30,23 @@ class Welcome extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loadingStatus: true
+            loadingStatus: true,
+            status: {},
+            types: []
         }
     }
 
+    // _openSettings() {
+    //     return Permissions.openSettings()
+    //         .then(() => alert('back to app!!'))
+    // }
+
     // update permissions when app comes back from settings
-    _handleAppStateChange(appState) {
-        if (appState == 'active') {
-            this._updatePermissions(this.state.types)
-        }
-    }
+    // _handleAppStateChange(appState) {
+    //     if (appState == 'active') {
+    //         this._updatePermissions(this.state.types)
+    //     }
+    // }
 
     componentWillMount() {
         this.props.getAllStores();
@@ -48,30 +55,48 @@ class Welcome extends Component {
 
     }
 
-    // _openSettings() {
-    //     return Permissions.openSettings()
-    //         .then(() => alert('back to app!!'))
+    // _updatePermissions(types) {
+    //     Permissions.checkMultiple(types)
+    //         .then(status => {
+    //             if (this.state.isAlways) {
+    //                 return Permissions.check('location', 'always')
+    //                     .then(location => ({ ...status, location }))
+    //             }
+    //             return status
+    //         })
+    //         .then(status => this.setState({ status }))
     // }
 
-    _requestPermission = () => {
-        console.log('request');
-        Permissions.request('location')
-            .then(response => {
-                console.log('res', response);
-                this.setState({ locationPermission: response })
-                if (response == 'authorized') {
-                    this.props.getCurrentLocation();
-                } else {
-                    (Platform.OS === 'ios') ? RNExitApp.exitApp() : BackHandler.exitApp();
-                }
-            });
-    }
-    // _requestCameraPermission = () => {
-    //     Permissions.request('camera')
-    //         .then(response => {
-    //             this.setState({ cameraPermission: response })
-    //         });
+    // _requestPermission(permission) {
+    //     var options
+
+    //     if (permission == 'location') {
+    //         options = this.state.isAlways ? 'always' : 'whenInUse'
+    //     }
+
+    //     Permissions.request(permission, options)
+    //         .then(res => {
+    //             this.setState({
+    //                 status: { ...this.state.status, [permission]: res }
+    //             })
+    //             if (res != 'authorized') {
+    //                 var buttons = [{ text: 'Cancel', style: 'cancel' }]
+    //                 if (this.state.canOpenSettings) buttons.push({ text: 'Open Settings', onPress: this._openSettings.bind(this) })
+
+    //                 Alert.alert(
+    //                     'Whoops!',
+    //                     "There was a problem getting your permission. Please enable it from settings.",
+    //                     buttons
+    //                 )
+    //             }
+    //         }).catch(e => console.warn(e))
     // }
+
+    // _onLocationSwitchChange() {
+    //     this.setState({ isAlways: !this.state.isAlways })
+    //     this._updatePermissions(this.state.types)
+    // }
+
 
     // _alertForLocationPermission = () => {
     //     Alert.alert(
@@ -83,38 +108,10 @@ class Welcome extends Component {
     //                     (Platform.OS === 'ios') ? RNExitApp.exitApp() : BackHandler.exitApp();
     //                 }
     //             },
-    //             this.state.locationPermission === 'undetermined' ?
-    //                 { text: 'Đồng ý', onPress: this._requestPermission() }
-    //                 : { text: 'Mở Settings', onPress: Permissions.canOpenSettings() ? Permissions.openSettings : null }
+    //             { text: 'Đồng ý', onPress: this._requestPermission() }
     //         ]
     //     )
     // }
-    // _alertForCameraPermission = () => {
-    //     Alert.alert(
-    //         'Yêu cầu quyền truy cập!',
-    //         'Ứng dụng cần truy cập máy ảnh của bạn!',
-    //         [
-    //             { text: 'Không', onPress: () => console.log('permission denied') },
-    //             this.state.locationPermission === 'undetermined' ?
-    //                 { text: 'Đồng ý', onPress: this._requestCameraPermission() }
-    //                 : { text: 'Mở cài đặt', onPress: Permissions.canOpenSettings() ? Permissions.openSettings : null }
-    //         ]
-    //     )
-    // }
-    _alertForLocationPermission = () => {
-        Alert.alert(
-            'Yêu cầu quyền truy cập!',
-            'Ứng dụng cần truy cập vị trí của bạn!',
-            [
-                {
-                    text: 'Không', onPress: () => {
-                        (Platform.OS === 'ios') ? RNExitApp.exitApp() : BackHandler.exitApp();
-                    }
-                },
-                { text: 'Đồng ý', onPress: this._requestPermission() }
-            ]
-        )
-    }
 
     componentDidMount() {
         NetInfo.isConnected.addEventListener('change', this._handleConnectionChange);
@@ -130,40 +127,35 @@ class Welcome extends Component {
                 );
             }
         }, 5000);
-        // Permissions.check('location')
-        //     .then(response => {
-        //         console.log('location', response);
-        //         //response is an object mapping type to permission
-        //         // this.setState({
-        //         //     locationPermission: response,
-        //         // });
-        //         if (response == 'authorized') {
-        //             this.props.getCurrentLocation();
-        //         } else {
-        //             this._alertForLocationPermission();
-        //         }
-        //     });
+        // let types = Permissions.getTypes()
+        // console.log(types);
+        // let canOpenSettings = Permissions.canOpenSettings()
+
+        // this.setState({ types, canOpenSettings })
+        // this._updatePermissions(types)
+        // AppState.addEventListener('change', this._handleAppStateChange.bind(this));
     }
 
     componentWillUnmount() {
+        console.log('change');
         NetInfo.isConnected.removeEventListener('change', this._handleConnectionChange);
-        // AppState.removeEventListener('change1', this._handleAppStateChange.bind(this));
+        // AppState.removeEventListener('change', this._handleAppStateChange.bind(this));
     }
 
     _handleConnectionChange = (isConnected) => {
-        console.log('e', isConnected);
+        // console.log('e', isConnected);
         this.props.connectionState(isConnected);
     };
 
     componentWillReceiveProps(nextProps) {
         if (this.props.isConnected.isConnected) {
-            console.log('a');
+            // console.log('a');
         }
         this.setState({
             loadingStatus: nextProps.loadingVeget || nextProps.loadingGeo || nextProps.loadingStores
         });
         if (!nextProps.loadingVeget && !nextProps.loadingGeo && !nextProps.loadingStores) {
-            console.log('asas');
+            // console.log('asas');
             this.props.goToMain();
         }
     }

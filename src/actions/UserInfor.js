@@ -7,6 +7,7 @@ export const getCurrentLocation = () => {
     return (dispatch) => {
         navigator.geolocation.getCurrentPosition(
             (position) => {
+                console.log('123');
                 dispatch({
                     type: GET_CURRENT_LOCATION,
                     payload: position
@@ -14,15 +15,22 @@ export const getCurrentLocation = () => {
             },
             (error) => {
                 console.log(error.message);
-                // Alert.alert(
-                //     'Thông báo',
-                //     'Ứng dụng không thể truy cập vị trí của bạn! Vui lòng kiểm tra lại và cấp quyền truy cập cho ứng dụng!',
-                //     [
-                //         { text: 'Không', onPress: () => console.log('permission denied') },
-                //         this.state.locationPermission === 'undetermined' ?
-                //             { text: 'Đồng ý', onPress: this._requestCameraPermission() }
-                //             : { text: 'Mở cài đặt', onPress: Permissions.canOpenSettings() ? Permissions.openSettings : null }
-                //     ])
+                const temp_position = {
+                    'coords': {
+                        accuracy: 5,
+                        altitude: 0,
+                        altitudeAccuracy: -1,
+                        heading: -1,
+                        latitude: 21.003613,
+                        longitude: 105.846169,
+                        speed: -1,
+                        timestamp: new Date().getTime()
+                    }
+                }
+                dispatch({
+                    type: GET_CURRENT_LOCATION,
+                    payload: temp_position
+                });
             },
             { timeout: 20000, maximumAge: 1000 }
         );
