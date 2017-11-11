@@ -3,7 +3,7 @@ import {
     View,
     Text,
     Image, Alert, DeviceEventEmitter,
-    FlatList, Dimensions, TouchableOpacity, Platform
+    FlatList, Dimensions, TouchableOpacity, Platform, AppState
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
@@ -78,7 +78,7 @@ class Cart extends Component {
 
     componentWillReceiveProps(nextProps) {
 
-        if (nextProps.user != null && !nextProps.loadingGeo) {
+        if (nextProps.user != null && !nextProps.loadingGeo && nextProps.user.coords != null) {
             // console.log('1');
             var { coords } = nextProps.user;
             // console.log('location', coords);
@@ -100,24 +100,19 @@ class Cart extends Component {
                 },
                 storeName: nextProps.storeLocation.name
             });
-            let start = nextProps.userLocation.latitude + ',' + nextProps.userLocation.longitude;
-            let end = nextProps.storeLocation.latitude + ',' + nextProps.storeLocation.longitude;
-            this.getDirections(start, end);
+            if (nextProps.user.coords != null) {
+                let start = nextProps.userLocation.latitude + ',' + nextProps.userLocation.longitude;
+                let end = nextProps.storeLocation.latitude + ',' + nextProps.storeLocation.longitude;
+                this.getDirections(start, end);
+            }
         }
-
-        // if (!nextProps.cartLoading && nextProps.storeLocation.name != this.state.storeName) {
-        //     let start1 = nextProps.userLocation.latitude + ',' + nextProps.userLocation.longitude;
-        //     let end1 = nextProps.storeLocation.latitude + ',' + nextProps.storeLocation.longitude;
-        //     this.getDirections(start1, end1);
-        // }
-
 
         this.setState({
             cartGoods: nextProps.cart,
             cartLoading: nextProps.cartLoading
         });
 
-        if (nextProps.storeLocation !== null && !nextProps.loadingGeo && !nextProps.cartLoading) {
+        if (nextProps.user.coords != null && nextProps.storeLocation !== null && !nextProps.loadingGeo && !nextProps.cartLoading) {
             let start = nextProps.userLocation.latitude + ',' + nextProps.userLocation.longitude;
             let end = nextProps.storeLocation.latitude + ',' + nextProps.storeLocation.longitude;
             this.getDirections(start, end);
@@ -140,8 +135,15 @@ class Cart extends Component {
 
     }
 
+    //update permissions when app comes back from settings
+    _handleAppStateChange(appState) {
+        if (appState == 'active') {
+            this.setState({ coords: [] });
+        }
+    }
+
     componentWillUnmount() {
-        // console.log('cart');
+        AppState.addEventListener('change', this._handleAppStateChange.bind(this));
     }
 
     emptyListComponent() {
@@ -160,7 +162,7 @@ class Cart extends Component {
     }
 
     componentDidMount() {
-        // console.log('cec', typeof (this.props.storeLocation));
+        AppState.addEventListener('change', this._handleAppStateChange.bind(this));
     }
 
     render() {
@@ -206,15 +208,19 @@ class Cart extends Component {
                     <View style={{ flex: 1 }}>
                         <View style={{ flex: 0.5 }}>
                             <MapView style={{ flex: 1 }} initialRegion={this.state.region}>
-                                <MapView.Polyline
-                                    coordinates={this.state.coords}
-                                    strokeWidth={3}
-                                    strokeColor="blue" />
-                                <MapView.Marker
-                                    key={this.state.region.latitude}
-                                    coordinate={latlng}
-                                    title='Vị trí của bạn'
-                                />
+                                {this.state.coords.length != 0 &&
+                                    <MapView.Polyline
+                                        coordinates={this.state.coords}
+                                        strokeWidth={3}
+                                        strokeColor="blue" />
+                                }
+
+                                {this.props.user.coords != null &&
+                                    <MapView.Marker
+                                        key={this.state.region.latitude}
+                                        coordinate={latlng}
+                                        title='Vị trí của bạn'
+                                    />}
                                 {store}
                             </MapView>
                         </View>

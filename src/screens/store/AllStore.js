@@ -51,8 +51,8 @@ class AllStore extends Component {
         this.state = {
             check_temp: false,
             region: {
-                latitude: this.props.userInfor.coords.latitude,
-                longitude: this.props.userInfor.coords.longitude,
+                latitude: 20.9675689,
+                longitude: 105.8337592,
                 latitudeDelta: 0.15,
                 longitudeDelta: 0.15
             },
@@ -128,15 +128,18 @@ class AllStore extends Component {
             searchData: nextProps.searchingData
         });
         if (nextProps.loadingGeo == false) {
-            var { coords } = nextProps.userInfor;
-            this.setState({
-                region: {
-                    latitude: coords.latitude,
-                    longitude: coords.longitude,
-                    latitudeDelta: LATITUDE_DELTA,
-                    longitudeDelta: LONGITUDE_DELTA
-                }
-            });
+            if (nextProps.userInfor.coords != null) {
+                var { coords } = nextProps.userInfor;
+                this.setState({
+                    region: {
+                        latitude: coords.latitude,
+                        longitude: coords.longitude,
+                        latitudeDelta: LATITUDE_DELTA,
+                        longitudeDelta: LONGITUDE_DELTA
+                    }
+                });
+            }
+
         }
     }
     /**
@@ -165,55 +168,13 @@ class AllStore extends Component {
         )
     }
 
-    // _requestPermission(permission) {
-    //     var options
-
-    //     if (permission == 'location') {
-    //         options = this.state.isAlways ? 'always' : 'whenInUse'
-    //     }
-
-    //     Permissions.request(permission, options)
-    //         .then(res => {
-    //             if (res != 'authorized') {
-    //                 var buttons = [{ text: 'Cancel', style: 'cancel' }]
-    //                 if (this.state.canOpenSettings) buttons.push({ text: 'Open Settings', onPress: this._openSettings.bind(this) })
-
-    //                 Alert.alert(
-    //                     'Whoops!',
-    //                     "There was a problem getting your permission. Please enable it from settings.",
-    //                     buttons
-    //                 )
-    //             }
-    //         }).catch(e => console.warn(e))
-    // }
-
     //update permissions when app comes back from settings
     _handleAppStateChange(appState) {
         if (appState == 'active') {
+            this.setState({ coords: [] });
             this.props.getCurrentLocation();
         }
     }
-
-    _openSettings() {
-        return Permissions.openSettings()
-            .then(() => alert('back to app!!'))
-    }
-
-    _updatePermissions(types) {
-        Permissions.checkMultiple(types)
-            .then(status => {
-                if (this.state.isAlways) {
-                    return Permissions.check('location', 'always')
-                        .then(location => ({ ...status, location }))
-                }
-                return status
-            })
-            .then(status => this.setState({ status }))
-    }
-
-    /**
-     * ___________________________________________________________________
-     */
 
     componentDidMount() {
         NetInfo.isConnected.addEventListener('change', this._handleConnectionChange);
@@ -269,10 +230,11 @@ class AllStore extends Component {
     /*  */
 
     onMarkerPress = (marker) => {
-        let startPos = this.props.userInfor.coords.latitude + ',' + this.props.userInfor.coords.longitude;
-        let endPos = marker.latitude + ',' + marker.longitude;
-        // console.log(startPos, endPos);
-        this.getDirections(startPos, endPos);
+        if (this.props.userInfor.coords != null) {
+            let startPos = this.props.userInfor.coords.latitude + ',' + this.props.userInfor.coords.longitude;
+            let endPos = marker.latitude + ',' + marker.longitude;
+            this.getDirections(startPos, endPos);
+        }
         this.moveMapToLocation({ 'latitude': marker.latitude, 'longitude': marker.longitude });
     }
 
@@ -301,9 +263,12 @@ class AllStore extends Component {
         this.setState({
             toogle: false
         });
-        let start = this.props.userInfor.coords.latitude + ',' + this.props.userInfor.coords.longitude;
-        let end = item.latitude + ',' + item.longitude;
-        this.getDirections(start, end);
+
+        if (this.props.userInfor.coords != null) {
+            let start = this.props.userInfor.coords.latitude + ',' + this.props.userInfor.coords.longitude;
+            let end = item.latitude + ',' + item.longitude;
+            this.getDirections(start, end);
+        }
         this.moveMapToLocation({ 'latitude': item.latitude, 'longitude': item.longitude });
     }
 
@@ -354,15 +319,18 @@ class AllStore extends Component {
                     provider={PROVIDER_GOOGLE}
                     initialRegion={this.state.region}
                     style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }}>
-                    <MapView.Polyline
-                        coordinates={this.state.coords}
-                        strokeWidth={3}
-                        strokeColor="blue" />
-                    <MapView.Marker
-                        key={this.state.region.latitude}
-                        coordinate={latlng}
-                        title='Vị trí của bạn'
-                    />
+                    {this.state.coords.length != 0 &&
+                        <MapView.Polyline
+                            coordinates={this.state.coords}
+                            strokeWidth={3}
+                            strokeColor="blue" />}
+                    {this.props.userInfor.coords != null &&
+                        <MapView.Marker
+                            key={this.state.region.latitude}
+                            coordinate={latlng}
+                            title='Vị trí của bạn'
+                        />}
+
                     {this.renderMakers()}
                 </MapView>
                 <SearchBox

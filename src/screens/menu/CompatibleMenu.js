@@ -32,8 +32,8 @@ class CompatibleMenu extends Component {
         super(props);
         this.state = {
             region: {
-                latitude: this.props.userInfor.coords.latitude,
-                longitude: this.props.userInfor.coords.longitude,
+                latitude: 20.9675689,
+                longitude: 105.8337592,
                 latitudeDelta: 0.15,
                 longitudeDelta: 0.15
             },
@@ -160,11 +160,12 @@ class CompatibleMenu extends Component {
             <View style={{ flex: 1 }}>
                 <View style={{ flex: 0.6 }}>
                     <MapView style={{ flex: 1 }} initialRegion={this.state.region}>
-                        <MapView.Marker
-                            key={this.state.region.latitude}
-                            coordinate={latlng}
-                            title='Vị trí của bạn'
-                        />
+                        {this.props.userInfor.coords != null &&
+                            <MapView.Marker
+                                key={this.state.region.latitude}
+                                coordinate={latlng}
+                                title='Vị trí của bạn'
+                            />}
                         {this.renderMakers()}
                     </MapView>
                 </View>

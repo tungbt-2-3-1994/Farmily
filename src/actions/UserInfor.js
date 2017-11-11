@@ -15,21 +15,9 @@ export const getCurrentLocation = () => {
             },
             (error) => {
                 console.log(error.message);
-                const temp_position = {
-                    'coords': {
-                        accuracy: 5,
-                        altitude: 0,
-                        altitudeAccuracy: -1,
-                        heading: -1,
-                        latitude: 21.003613,
-                        longitude: 105.846169,
-                        speed: -1,
-                        timestamp: new Date().getTime()
-                    }
-                }
                 dispatch({
                     type: GET_CURRENT_LOCATION,
-                    payload: temp_position
+                    payload: { 'coords': null }
                 });
             },
             { timeout: 20000, maximumAge: 1000 }
