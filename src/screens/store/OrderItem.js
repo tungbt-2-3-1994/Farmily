@@ -16,14 +16,9 @@ import ImageSlider from 'react-native-image-slider';
 import { addItemToCart, updateItemInCartLocally } from '../../actions';
 
 const window = Dimensions.get('window');
-const PARALLAX_HEADER_HEIGHT = 200;
+const PARALLAX_HEADER_HEIGHT = 9 * window.width / 16;
 const STICKY_HEADER_HEIGHT = 50;
 const AVATAR_SIZE = 120;
-
-
-// var dataSource = new ViewPager.DataSource({
-//     pageHasChanged: (p1, p2) => p1 !== p2,
-// });
 
 class OrderItem extends Component {
 

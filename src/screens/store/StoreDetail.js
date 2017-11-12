@@ -15,9 +15,8 @@ import { Infor } from '../../components/StoreMap/Infor';
 import { getStoreById } from '../../actions';
 
 const window = Dimensions.get('window');
-const PARALLAX_HEADER_HEIGHT = 150;
+const PARALLAX_HEADER_HEIGHT = 9 * window.width / 16;
 const STICKY_HEADER_HEIGHT = 50;
-const AVATAR_SIZE = 120;
 
 import ImageSlider from 'react-native-image-slider';
 

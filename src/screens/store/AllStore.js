@@ -23,7 +23,7 @@ const { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
 
-const LATITUDE_DELTA = 0.0222;
+const LATITUDE_DELTA = 1;
 const LONGITUDE_DELTA = ASPECT_RATIO * LATITUDE_DELTA;
 
 import Permissions from 'react-native-permissions';
@@ -53,8 +53,8 @@ class AllStore extends Component {
             region: {
                 latitude: 20.9675689,
                 longitude: 105.8337592,
-                latitudeDelta: 0.15,
-                longitudeDelta: 0.15
+                latitudeDelta: LATITUDE_DELTA,
+                longitudeDelta: LONGITUDE_DELTA
             },
             initialRender: true,
             markers: [],
@@ -358,15 +358,15 @@ class AllStore extends Component {
                     <View
                         {...this.panResponder.panHandlers}
                         style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0, 0, 0, 0.4)' }}>
-                        <View style={{ width: width, height: 170 }}>
-                            <Text style={{ paddingLeft: 10, fontSize: 16, color: 'rgba(180, 280, 200, 0.7)' }}>Các cửa hàng xung quanh bạn</Text>
+                        <View style={{ width: width - 20, padding: 10, backgroundColor: 'white', marginLeft: 10, marginRight: 10 }}>
+                            <Text style={{ paddingLeft: 10, fontSize: 16, color: 'black' }}>Các cửa hàng xung quanh bạn</Text>
                             <FlatList
-                                style={{ backgroundColor: 'rgba(131, 199, 92, 0.8)', margin: 5 }}
+                                style={{ margin: 5 }}
                                 data={this.props.stores}
                                 renderItem={({ item }) => (
-                                    <TouchableOpacity onPress={() => this.clickItem(item)} style={{ alignItems: 'center', padding: 5, borderRadius: 5, borderWidth: 1, borderColor: 'blue', flexDirection: 'row', margin: 5 }}>
+                                    <TouchableOpacity onPress={() => this.clickItem(item)} style={{ alignItems: 'center', padding: 5, borderRadius: 5, borderWidth: 1, borderColor: '#388E3C', flexDirection: 'row', margin: 5 }}>
                                         <Image source={{ uri: 'http://farm.ongnhuahdpe.com'.concat(item.logo) }} style={{ width: 25, height: 25, resizeMode: 'stretch' }} />
-                                        <Text style={{ color: 'white', paddingLeft: 5 }}>{item.name}</Text>
+                                        <Text style={{ color: 'white', paddingLeft: 5, color: 'black' }}>{item.name}</Text>
                                     </TouchableOpacity>
                                 )}
                                 keyExtractor={item => item.id}
