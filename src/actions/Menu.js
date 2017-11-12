@@ -67,4 +67,37 @@ export const getCompatibleStore = (lat, lng, vegIds, quantity) => {
     }
 }
 
+export const getCompatibleStoreWithoutLocation = (vegIds, quantity) => {
+    // console.log('quan', quantity);
+    return (dispatch) => {
+        fetch(`https://farm.ongnhuahdpe.com/stores?items_per_page=3`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                'vegetables': vegIds
+            })
+        })
+            .then((response) => response.json())
+            .then((responseData) => {
+                console.log('responseData', responseData);
+                dispatch({
+                    type: GET_COMPATIBLE_STORES,
+                    payload: responseData.data
+                });
+                const navigateToCompaMenu = NavigationActions.navigate({
+                    routeName: 'CompatibleMenu',
+                    params: {
+                        'data': vegIds,
+                        'quantityData': quantity
+                    }
+                });
+                dispatch(navigateToCompaMenu);
+            })
+            .done();
+    }
+}
+
 

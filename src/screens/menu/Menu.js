@@ -11,7 +11,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
 // import PopupDialog, { SlideAnimation, DialogTitle, DialogButton, } from 'react-native-popup-dialog';
 
-import { getAllVegetables, updateMenu, getCompatibleStore } from '../../actions';
+import { getAllVegetables, updateMenu, getCompatibleStore, getCompatibleStoreWithoutLocation } from '../../actions';
 
 const { width, height } = Dimensions.get('window');
 
@@ -118,11 +118,19 @@ class Menu extends Component {
         } else {
             let data = this.getMenu();
             let quantity = this.getQuantity();
-            // console.log('quantity', quantity);
 
-            let { coords } = this.props.userInfor;
             this.setState({ loading: true });
-            this.props.getCompatibleStore(coords.latitude, coords.longitude, data, quantity);
+
+            if (this.props.userInfor.coords != null) {
+                console.log('1');
+                let { coords } = this.props.userInfor;
+                this.props.getCompatibleStore(coords.latitude, coords.longitude, data, quantity);
+            } else {
+                console.log('2');
+                this.props.getCompatibleStoreWithoutLocation(data, quantity);
+            }
+
+
         }
     }
 
@@ -237,4 +245,4 @@ const mapStateToProps = (state) => {
     });
 }
 
-export default connect(mapStateToProps, { getAllVegetables, updateMenu, getCompatibleStore })(Menu);
+export default connect(mapStateToProps, { getCompatibleStoreWithoutLocation, getAllVegetables, updateMenu, getCompatibleStore })(Menu);
