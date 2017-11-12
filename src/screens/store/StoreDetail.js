@@ -7,7 +7,7 @@ import {
     Dimensions,
     FlatList, ActivityIndicator
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 
@@ -152,6 +152,10 @@ class StoreDetail extends Component {
                             <Infor infor={marker.address} icon='location-on' />
                             <Infor infor={marker.info} icon='info-outline' />
                             <Infor infor={marker.partner.phone_number} icon='phone' />
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('Fanpage')} style={styles.fanpage}>
+                                <Icon name='logo-facebook' size={20} />
+                                <Text style={styles.textFanpage}>https://www.facebook.com/Farmily-1765714337075387/</Text>
+                            </TouchableOpacity>
                             <Infor infor={'8: 00'} icon='alarm-on' />
                             <Infor infor={'20: 00'} icon='alarm-off' />
                         </View>
@@ -189,6 +193,14 @@ const styles = {
     container: {
         flex: 1,
         backgroundColor: '#DEDEDE'
+    },
+    fanpage: {
+        flexDirection: 'row',
+        paddingTop: 10, paddingLeft: 10, paddingRight: 20
+    },
+    textFanpage: {
+        paddingLeft: 15,
+        color: '#0044CC'
     },
     text: {
         marginTop: 10,

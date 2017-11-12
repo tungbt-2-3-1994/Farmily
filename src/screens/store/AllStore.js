@@ -384,7 +384,7 @@ class AllStore extends Component {
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.floatingBtn2} onPress={() => { this._alertForLocationPermission() }}>
-                    <Icon name='location-searching' size={25} color='white' />
+                    <Icon name='gps-fixed' size={25} color='white' />
                 </TouchableOpacity>
                 {!this.props.isConnected.isConnected &&
                     <View style={styles.activityIndicator}>
