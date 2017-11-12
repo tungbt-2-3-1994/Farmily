@@ -168,7 +168,7 @@ class Welcome extends Component {
         return (
             <View style={[css.container, styles.container]}>
                 <StatusBar
-                    backgroundColor="rgba(0, 0, 0, 0.6)"
+                    backgroundColor="#388E3C"
                     barStyle="light-content"
                 />
                 <Image
@@ -177,9 +177,10 @@ class Welcome extends Component {
                     resizeMode="stretch"
                     blurRadius={5}
                 />
+                <View style={{ position: 'absolute', top: 0, bottom: 0, right: 0, left: 0, backgroundColor: 'rgba(0, 0, 0, 0.1)' }} />
                 <Image
                     style={css.logo}
-                    source={require('../img/logofarmilytransparent.png')}
+                    source={require('../img/userTransparent.png')}
                 />
                 <View style={css.auth_content}>
                     {/* <Text style={{ fontFamily: 'Baskerville-BoldItalic', fontSize: 20, backgroundColor: 'transparent', color: 'white' }}>Chào mừng bạn đến với Farmily</Text> */}
