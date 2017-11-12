@@ -196,10 +196,10 @@ const styles = {
     },
     fanpage: {
         flexDirection: 'row',
-        paddingTop: 10, paddingLeft: 10, paddingRight: 20
+        paddingTop: 10, paddingLeft: 12, paddingRight: 20
     },
     textFanpage: {
-        paddingLeft: 15,
+        paddingLeft: 13,
         color: '#0044CC'
     },
     text: {

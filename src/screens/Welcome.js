@@ -19,6 +19,8 @@ import { connect } from 'react-redux';
 
 import Permissions from 'react-native-permissions';
 
+const { width } = Dimensions.get('window');
+
 import { getCheckoutCart, getCurrentLocation, getAllVegetables, getAllStores, goToMain, connectionState } from '../actions';
 
 class Welcome extends Component {
@@ -177,7 +179,7 @@ class Welcome extends Component {
                 />
                 <Image
                     style={css.logo}
-                    source={require('../img/logo.png')}
+                    source={require('../img/logofarmilytransparent.png')}
                 />
                 <View style={css.auth_content}>
                     {/* <Text style={{ fontFamily: 'Baskerville-BoldItalic', fontSize: 20, backgroundColor: 'transparent', color: 'white' }}>Chào mừng bạn đến với Farmily</Text> */}
@@ -237,13 +239,10 @@ const css = {
         height: Dimensions.get('window').height,
     },
     logo: {
-        alignSelf: 'center',
-        borderRadius: 80,
-        height: 160,
-        paddingVertical: 40,
-        marginTop: 40,
-        width: 160,
-        marginBottom: 10
+        height: 5 * width / 14,
+        width: 5 * width / 14,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     auth_content: {
         paddingHorizontal: 30,

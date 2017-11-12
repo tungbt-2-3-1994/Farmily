@@ -189,10 +189,10 @@ class Account extends Component {
                         <TextInput
                             style={{
                                 height: 30,
-                                fontSize: 14,
+                                fontSize: 20,
                                 backgroundColor: 'white',
                                 borderRadius: 5,
-                                paddingBottom: 5,
+                                padding: 5,
                                 borderColor: this.state.emailBorderColor,
                                 borderWidth: 2
                             }}
@@ -210,10 +210,10 @@ class Account extends Component {
                             secureTextEntry={true}
                             style={{
                                 height: 30,
-                                fontSize: 14,
+                                fontSize: 20,
                                 backgroundColor: 'white',
                                 borderRadius: 5,
-                                paddingBottom: 5,
+                                padding: 5,
                                 borderColor: this.state.passBorderColor,
                                 borderWidth: 2
                             }}
