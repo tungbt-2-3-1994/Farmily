@@ -28,13 +28,7 @@ const LONGITUDE_DELTA = ASPECT_RATIO * LATITUDE_DELTA;
 
 import Permissions from 'react-native-permissions';
 
-var font = 'baskerville_bold_italic';
-
-// if (Platform.OS == 'android') {
-//     font = 'baskerville_bold_italic';
-// } else if (Platform.OS == 'ios') {
-//     font = 'Baskerville-BoldItalic';
-// }
+import RNANAndroidSettingsLibrary from 'react-native-android-settings-library';
 
 class AllStore extends Component {
 
@@ -157,16 +151,28 @@ class AllStore extends Component {
             'Ứng dụng cần truy cập vị trí của bạn!',
             [
                 { text: 'Không', onPress: () => console.log('permission denied') },
-                this.state.locationPermission == 'undetermined' ?
-                    { text: 'Đồng ý', onPress: this._requestPermission() }
-                    : { text: 'Mở Settings', onPress: Permissions.canOpenSettings() ? Permissions.openSettings : null }
+                this.state.locationPermission === 'undetermined' ?
+                    { text: 'Đồng ý', onPress: this._requestPermission }
+                    : {
+                        text: 'Mở cài đặt', onPress: Permissions.canOpenSettings() ?
+                            Permissions.openSettings : this.openSettingsAndroid
+                    }
             ]
         )
+    }
+
+    openSettingsAndroid = () => {
+        RNANAndroidSettingsLibrary.open('ACTION_APPLICATION_DETAILS_SETTINGS')
     }
 
     //update permissions when app comes back from settings
     _handleAppStateChange(appState) {
         if (appState == 'active') {
+            Permissions.check('location').then(response => {
+                this.setState({
+                    locationPermission: response
+                });
+            })
             this.setState({ coords: [] });
             this.props.getCurrentLocation();
         }
@@ -174,6 +180,11 @@ class AllStore extends Component {
 
     componentDidMount() {
         NetInfo.isConnected.addEventListener('change', this._handleConnectionChange);
+        Permissions.check('location').then(response => {
+            this.setState({
+                locationPermission: response
+            });
+        })
         AppState.addEventListener('change', this._handleAppStateChange.bind(this));
     }
 
@@ -282,14 +293,7 @@ class AllStore extends Component {
             this.setState({ coords: coords })
             return coords
         } catch (error) {
-            Alert.alert(
-                'Thông báo',
-                'Có lỗi xảy ra khi tìm đường. Tìm kiếm lại',
-                [
-                    { text: 'Ok', onPress: () => this.getDirections(startLoc, destinationLoc) },
-                ],
-                { cancelable: false }
-            );
+            this.getDirections(startLoc, destinationLoc);
             return error;
         }
     }
@@ -383,9 +387,9 @@ class AllStore extends Component {
                     <Icon name='zoom-in' size={25} color='white' />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.floatingBtn2} onPress={() => { this._alertForLocationPermission() }}>
+                {this.state.locationPermission != 'authorized' && <TouchableOpacity style={styles.floatingBtn2} onPress={() => { this._alertForLocationPermission() }}>
                     <Icon name='gps-fixed' size={25} color='white' />
-                </TouchableOpacity>
+                </TouchableOpacity>}
                 {!this.props.isConnected.isConnected &&
                     <View style={styles.activityIndicator}>
                         <Text>Loading</Text>

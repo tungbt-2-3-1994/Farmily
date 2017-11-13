@@ -15,10 +15,97 @@ import ImageSlider from 'react-native-image-slider';
 
 import { addItemToCart, updateItemInCartLocally } from '../../actions';
 
+import { InforF } from '../../components/StoreMap/InforF';
+
 const window = Dimensions.get('window');
 const PARALLAX_HEADER_HEIGHT = 9 * window.width / 16;
 const STICKY_HEADER_HEIGHT = 50;
 const AVATAR_SIZE = 120;
+
+const netural = [
+    {
+        'pH': '5.5-6.0',
+        'cF': '20-25',
+        'EC': '2.0-2.5',
+        'PPM': '1400-1750'
+    },
+    {
+        //hanh cu
+        'pH': '6.0-6.7',
+        'cF': '14-18',
+        'EC': '1.4-1.8',
+        'PPM': '980-1260'
+    },
+    {
+        //xa lach
+        'pH': '5.5-6.5',
+        'cF': '8-12',
+        'EC': '0.8-1.2',
+        'PPM': '560-840'
+    },
+    {
+        //cu cai
+        'pH': '7.0',
+        'cF': '15-20',
+        'EC': '1.5-2.0',
+        'PPM': '1050-1400'
+    },
+    {
+        //others
+        'pH': '6.5-7.0',
+        'cF': '14-18',
+        'EC': '1.4-1.8',
+        'PPM': '980-1260'
+    },
+    {
+        //others
+        'pH': '5.8-6.0',
+        'cF': '17-25',
+        'EC': '1.7-2.5',
+        'PPM': '1190-1750'
+    },
+    {
+        'pH': '5.5-6.0',
+        'cF': '20-25',
+        'EC': '2.0-2.5',
+        'PPM': '1400-1750'
+    },
+    {
+        //hanh cu
+        'pH': '6.0-6.7',
+        'cF': '14-18',
+        'EC': '1.4-1.8',
+        'PPM': '980-1260'
+    },
+    {
+        //xa lach
+        'pH': '5.5-6.5',
+        'cF': '8-12',
+        'EC': '0.8-1.2',
+        'PPM': '560-840'
+    },
+    {
+        //cu cai
+        'pH': '7.0',
+        'cF': '15-20',
+        'EC': '1.5-2.0',
+        'PPM': '1050-1400'
+    },
+    {
+        //others
+        'pH': '6.5-7.0',
+        'cF': '14-18',
+        'EC': '1.4-1.8',
+        'PPM': '980-1260'
+    },
+    {
+        //others
+        'pH': '5.8-6.0',
+        'cF': '17-25',
+        'EC': '1.7-2.5',
+        'PPM': '1190-1750'
+    },
+];
 
 class OrderItem extends Component {
 
@@ -127,6 +214,7 @@ class OrderItem extends Component {
     }
 
     render() {
+        const vegetableId = this.props.navigation.state.params.item.id;
         const { onScroll = () => { } } = this.props;
         const { item } = this.props.navigation.state.params;
         return (
@@ -141,6 +229,13 @@ class OrderItem extends Component {
                     renderStickyHeader={this.renderStickyHeader.bind(this)}
                 >
                     <View style={styles.container}>
+                        <View style={{ backgroundColor: '#FFFFFF', marginTop: 5, paddingRight: 10, paddingTop: 5, paddingBottom: 5 }}>
+                            <Text style={styles.text}>Nồng độ dinh dưỡng đang dùng</Text>
+                            <InforF infor={netural[vegetableId].cF} text='cF' />
+                            <InforF infor={netural[vegetableId].EC} text='EC' />
+                            <InforF infor={netural[vegetableId].pH} text='pH' />
+                            <InforF infor={netural[vegetableId].PPM} text='PPM' />
+                        </View>
                         <View style={{ backgroundColor: '#FFFFFF', marginTop: 5 }}>
                             <Text style={styles.text}>Chi tiết sản phẩm</Text>
                             <Text style={{ fontSize: 16, textAlign: 'left', justifyContent: 'center', padding: 10 }}>{item.description}</Text>
@@ -154,7 +249,7 @@ class OrderItem extends Component {
                                 <View style={{ paddingTop: 15, flexDirection: 'row' }}>
                                     <TextInput
                                         style={{ fontSize: 16, textAlign: 'right', width: 150 }}
-                                        placeholder='Nhap so luong'
+                                        placeholder='Nhập số lượng'
                                         keyboardType='numeric'
                                         returnKeyType='done'
                                         onChangeText={(text) => { this.setState({ quantityInput: text }) }}

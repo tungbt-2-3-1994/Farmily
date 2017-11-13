@@ -12,6 +12,7 @@ export const getCurrentLocation = () => {
                     type: GET_CURRENT_LOCATION,
                     payload: position
                 });
+                return;
             },
             (error) => {
                 console.log(error.message);
@@ -20,7 +21,7 @@ export const getCurrentLocation = () => {
                     payload: { 'coords': null }
                 });
             },
-            { timeout: 20000, maximumAge: 1000 }
+            { timeout: 4000, maximumAge: 1000 }
         );
     }
 }

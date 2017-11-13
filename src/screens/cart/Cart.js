@@ -63,15 +63,8 @@ class Cart extends Component {
             this.setState({ coords: coords })
             return coords
         } catch (error) {
-            Alert.alert(
-                'Thông báo',
-                'Có lỗi xảy ra khi tìm đường. Tìm kiếm lại',
-                [
-                    { text: 'Ok', onPress: () => this.getDirections(startLoc, destinationLoc) },
-                ],
-                { cancelable: false }
-            );
-            return error
+            this.getDirections(startLoc, destinationLoc);
+            return error;
         }
     }
 

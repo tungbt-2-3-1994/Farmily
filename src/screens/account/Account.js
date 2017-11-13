@@ -188,11 +188,13 @@ class Account extends Component {
                         <Label text="Email" />
                         <TextInput
                             style={{
-                                height: 30,
-                                fontSize: 20,
+                                fontSize: 16,
                                 backgroundColor: 'white',
                                 borderRadius: 5,
-                                padding: 5,
+                                paddingTop: 5,
+                                paddingBottom: 5,
+                                paddingLeft: 10,
+                                paddingRight: 10,
                                 borderColor: this.state.emailBorderColor,
                                 borderWidth: 2
                             }}
@@ -209,11 +211,13 @@ class Account extends Component {
                         <TextInput
                             secureTextEntry={true}
                             style={{
-                                height: 30,
-                                fontSize: 20,
+                                fontSize: 16,
                                 backgroundColor: 'white',
                                 borderRadius: 5,
-                                padding: 5,
+                                paddingTop: 5,
+                                paddingBottom: 5,
+                                paddingLeft: 10,
+                                paddingRight: 10,
                                 borderColor: this.state.passBorderColor,
                                 borderWidth: 2
                             }}
