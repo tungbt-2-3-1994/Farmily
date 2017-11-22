@@ -158,6 +158,14 @@ class Cart extends Component {
         AppState.addEventListener('change', this._handleAppStateChange.bind(this));
     }
 
+    changeMoney = (money) => {
+        let result = '';
+        while (money / 1000 > 0) {
+            result = result + money / 1000 + '.';
+            money %= 1000;
+        }
+    }
+
     render() {
 
         var latlng = {
@@ -271,7 +279,7 @@ class Cart extends Component {
                             <Text></Text>
                             <Text>
                                 <Text>Tổng: </Text>
-                                <Text style={{ color: 'red', fontFamily: 'Baskerville-BoldItalic', fontSize: 20, paddingRight: 10, paddingBottom: 5 }}>{this.state.price} </Text>
+                                <Text style={{ color: '#31A85E', fontSize: 20, paddingRight: 10, paddingBottom: 5 }}>{new Intl.NumberFormat('de-DE').format(this.state.price)} </Text>
                                 <Text>đồng</Text>
                             </Text>
 

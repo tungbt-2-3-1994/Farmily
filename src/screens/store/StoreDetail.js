@@ -45,16 +45,6 @@ class StoreDetail extends Component {
     }
 
     renderForeground() {
-        // const { images } = this.props.navigation.state.params.marker;
-        // return (
-        //     <View style={styles.foreground}>
-        //         {images.length !== 0 ? (
-        //             <Image source={{ uri: 'http://farm.ongnhuahdpe.com'.concat(images[0].src) }} style={{ width: window.width, height: PARALLAX_HEADER_HEIGHT, resizeMode: 'stretch' }} />
-        //         ) : (
-        //                 <Image source={require('../../img/storef.jpg')} style={{ width: window.width, height: PARALLAX_HEADER_HEIGHT, resizeMode: 'stretch' }} />
-        //             )}
-        //     </View>
-        // );
         if (this.props.loading == false) {
             let { images } = this.props.detailStore;
 

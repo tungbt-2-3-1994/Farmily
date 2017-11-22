@@ -32,8 +32,8 @@ class CompatibleMenu extends Component {
         super(props);
         this.state = {
             region: {
-                latitude: 20.9675689,
-                longitude: 105.8337592,
+                latitude: this.props.userInfor.coords != null ? this.props.userInfor.coords.latitude : 20.9675689,
+                longitude: this.props.userInfor.coords != null ? this.props.userInfor.coords.longitude : 105.8337592,
                 latitudeDelta: 0.15,
                 longitudeDelta: 0.15
             },
@@ -89,7 +89,17 @@ class CompatibleMenu extends Component {
 
 
     componentWillReceiveProps(nextProps) {
-        // if (nextProps.loggedIn.loggedIn )
+        console.log(nextProps.userInfor);
+        if (nextProps.userInfor.coords != null) {
+            this.setState({
+                region: {
+                    latitude: nextProps.userInfor.coords.latitude,
+                    longitude: nextProps.userInfor.coords.longitude,
+                    latitudeDelta: 0.15,
+                    longitudeDelta: 0.15
+                },
+            });
+        }
     }
 
     renderMakers() {
