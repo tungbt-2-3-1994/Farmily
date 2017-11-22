@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 
 import Container from '../../components/Login/Container';
@@ -14,6 +15,8 @@ import Label from '../../components/Login/Label';
 import ButtonLogin from '../../components/Login/Button';
 
 import { normalSignUp } from '../../actions';
+
+import { Hideo } from 'react-native-textinput-effects';
 
 class SignUp extends Component {
 
@@ -66,21 +69,58 @@ class SignUp extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <ScrollView style={styles.scroll}>
-                    <Container>
-                        <Label text="Tên người dùng" />
-                        <TextInput
-                            style={styles.textInput}
-                            onChangeText={(text) => { this.setState({ textName: text }) }}
-                            underlineColorAndroid='transparent'
-                        />
-                    </Container>
-                    <Container>
+                    <Hideo
+                        placeholder='Tên người dùng'
+                        iconClass={FontAwesomeIcon}
+                        iconName={'user'}
+                        iconColor={'white'}
+                        iconBackgroundColor={'#388E3C'}
+                        inputStyle={{ color: '#464949' }}
+                        style={{ borderWidth: 1, borderColor: '#388E3C', marginTop: 10 }}
+                        onChangeText={(text) => { this.setState({ textName: text }) }}
+                        underlineColorAndroid='transparent'
+                    />
+                    <Hideo
+                        placeholder='Email'
+                        iconClass={FontAwesomeIcon}
+                        iconName={'envelope-o'}
+                        iconColor={'white'}
+                        iconBackgroundColor={'#388E3C'}
+                        inputStyle={{ color: '#464949' }}
+                        style={{ borderWidth: 1, borderColor: '#388E3C', marginTop: 10 }}
+                        onChangeText={(text) => { this.setState({ textEmail: text }) }}
+                        underlineColorAndroid='transparent'
+                        keyboardType="email-address"
+                    />
+                    <Hideo
+                        placeholder='Mật khẩu'
+                        iconClass={FontAwesomeIcon}
+                        iconName={'key'}
+                        iconColor={'white'}
+                        iconBackgroundColor={'#388E3C'}
+                        inputStyle={{ color: '#464949' }}
+                        style={{ borderWidth: 1, borderColor: '#388E3C', marginTop: 10 }}
+                        secureTextEntry={true}
+                        onChangeText={(text) => { this.setState({ textPassword: text }) }}
+                        underlineColorAndroid='transparent'
+                    />
+                    <Hideo
+                        placeholder='Xác nhận mật khẩu'
+                        iconClass={FontAwesomeIcon}
+                        iconName={'key'}
+                        iconColor={'white'}
+                        iconBackgroundColor={'#388E3C'}
+                        inputStyle={{ color: '#464949' }}
+                        style={{ borderWidth: 1, borderColor: '#388E3C', marginTop: 10 }}
+                        secureTextEntry={true}
+                        onChangeText={(text) => { this.setState({ textVerify: text }) }}
+                        underlineColorAndroid='transparent'
+                    />
+                    {/* <Container>
                         <Label text="Email" />
                         <TextInput
                             style={styles.textInput}
-                            onChangeText={(text) => { this.setState({ textEmail: text }) }}
-                            underlineColorAndroid='transparent'
-                            keyboardType="email-address"
+
                         />
                     </Container>
                     <Container>
@@ -91,8 +131,8 @@ class SignUp extends Component {
                             onChangeText={(text) => { this.setState({ textPassword: text }) }}
                             underlineColorAndroid='transparent'
                         />
-                    </Container>
-                    <Container>
+                    </Container> */}
+                    {/* <Container>
                         <Label text="Xác nhận mật khẩu" />
                         <TextInput
                             secureTextEntry={true}
@@ -100,7 +140,7 @@ class SignUp extends Component {
                             onChangeText={(text) => { this.setState({ textVerify: text }) }}
                             underlineColorAndroid='transparent'
                         />
-                    </Container>
+                    </Container> */}
                     <View style={styles.footer}>
                         <Container>
                             <ButtonLogin
@@ -129,7 +169,7 @@ const styles = {
     },
     signUp: { borderRadius: 5, backgroundColor: '#42F2B0', width: 100, height: 30, justifyContent: 'center', alignItems: 'center' },
     scroll: {
-        backgroundColor: '#E1D7D8',
+        backgroundColor: 'white',
         padding: 30,
         flexDirection: 'column'
     },
