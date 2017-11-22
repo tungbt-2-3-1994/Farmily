@@ -20,6 +20,9 @@ import Label from '../../components/Login/Label';
 import ButtonLogin from '../../components/Login/Button';
 const { width, height } = Dimensions.get('window');
 
+import { Fumi } from 'react-native-textinput-effects';
+
+
 import { normalLogin, logout, autoCheckLogin, getAllItems, socialLogin } from '../../actions';
 
 class Account extends Component {
@@ -35,23 +38,7 @@ class Account extends Component {
     state = {
         textEmail: '',
         textPassword: '',
-        animating: false,
-        emailBorderColor: '#595856',
-        passBorderColor: '#595856',
-    }
-
-    handleEmailFocus = () => {
-        this.setState({
-            emailBorderColor: '#34A853',
-            passBorderColor: '#595856'
-        });
-    }
-
-    handlePassFocus = () => {
-        this.setState({
-            passBorderColor: '#34A853',
-            emailBorderColor: '#595856'
-        });
+        animating: false
     }
 
     onLogin = async () => {
@@ -68,11 +55,6 @@ class Account extends Component {
             fetch(`https://graph.facebook.com/v2.10/me?fields=email,name,friends,picture&access_token=${token}`)
                 .then((response) => response.json())
                 .then((json) => {
-                    // console.log('json', json);
-                    // this.setState({
-                    //     url: json.picture.data.url
-                    // });
-
                     this.props.socialLogin(json.name, json.id, json.picture.data.url);
                 }).catch(error => {
                     console.log('error', error);
@@ -119,9 +101,6 @@ class Account extends Component {
         this.props.autoCheckLogin();
     }
 
-    componentWillUnmount() {
-        console.log('account');
-    }
 
     validateEmail = (email) => {
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -184,50 +163,33 @@ class Account extends Component {
         } else {
             loginFrom = (
                 <ScrollView style={styles.scroll}>
-                    <Container>
-                        <Label text="Email" />
-                        <TextInput
-                            style={{
-                                fontSize: 16,
-                                backgroundColor: 'white',
-                                borderRadius: 5,
-                                paddingTop: 5,
-                                paddingBottom: 5,
-                                paddingLeft: 10,
-                                paddingRight: 10,
-                                borderColor: this.state.emailBorderColor,
-                                borderWidth: 2
-                            }}
-                            returnKeyType="next"
-                            onSubmitEditing={() => this.passwordInput.focus()}
-                            onChangeText={(text) => { this.setState({ textEmail: text }) }}
-                            underlineColorAndroid='transparent'
-                            keyboardType="email-address"
-                            onFocus={() => this.handleEmailFocus()}
-                        />
-                    </Container>
-                    <Container>
-                        <Label text="Mật khẩu" />
-                        <TextInput
-                            secureTextEntry={true}
-                            style={{
-                                fontSize: 16,
-                                backgroundColor: 'white',
-                                borderRadius: 5,
-                                paddingTop: 5,
-                                paddingBottom: 5,
-                                paddingLeft: 10,
-                                paddingRight: 10,
-                                borderColor: this.state.passBorderColor,
-                                borderWidth: 2
-                            }}
-                            returnKeyType='go'
-                            onChangeText={(text) => { this.setState({ textPassword: text }) }}
-                            underlineColorAndroid='transparent'
-                            ref={(input) => this.passwordInput = input}
-                            onFocus={() => this.handlePassFocus()}
-                        />
-                    </Container>
+                    <Fumi
+                        label={'Email'}
+                        iconClass={IconFont}
+                        iconName={'envelope-o'}
+                        iconColor={'#368e47'}
+                        iconSize={20}
+                        returnKeyType="next"
+                        onChangeText={(text) => { this.setState({ textEmail: text }) }}
+                        underlineColorAndroid='transparent'
+                        keyboardType="email-address"
+                        onSubmitEditing={() => this.passwordInput.focus()}
+                        style={{ borderColor: '#595856', borderWidth: 1, borderRadius: 10 }}
+                    />
+                    <Fumi
+                        label={'Mật khẩu'}
+                        iconClass={IconFont}
+                        iconName={'key'}
+                        iconColor={'#368e47'}
+                        iconSize={20}
+                        returnKeyType='go'
+                        onChangeText={(text) => { this.setState({ textPassword: text }) }}
+                        underlineColorAndroid='transparent'
+                        ref={(input) => this.passwordInput = input}
+                        style={{ borderColor: '#595856', borderWidth: 1, borderRadius: 10, marginTop: 10 }}
+                        secureTextEntry={true}
+                    />
+
                     <View style={styles.footer}>
                         <Container>
                             <ButtonLogin
@@ -237,6 +199,10 @@ class Account extends Component {
                             />
                         </Container>
                     </View>
+                    <View style={{ alignItems: 'center', marginTop: 20, marginBottom: 20 }}>
+                        <Text>-----or-----</Text>
+                    </View>
+
                     <Container>
                         <ButtonLogin
                             styles={{ button: styles.transparentButton }}
@@ -249,7 +215,7 @@ class Account extends Component {
                             </View>
                         </ButtonLogin>
                     </Container>
-                    <View style={{ marginTop: 30, alignItems: 'center', justifyContent: 'center' }}>
+                    <View style={{ marginTop: 25, alignItems: 'center', justifyContent: 'center' }}>
                         <Text style={{}}>Bạn chưa có tài khoản?</Text>
                         <TouchableOpacity style={styles.signUp} onPress={() => { this.props.navigation.navigate('SignUpStack') }}>
                             <Text style={{ color: 'white', fontWeight: 'bold' }}>Đăng ký</Text>
@@ -297,10 +263,10 @@ const styles = {
         borderWidth: 2
     },
     transparentButton: {
-        marginTop: 30,
         borderColor: '#3B5699',
-        borderWidth: 2,
+        borderWidth: 1,
         borderRadius: 5,
+        marginTop: 5,
     },
     transparentButtonOut: {
         marginTop: 30,
@@ -340,8 +306,7 @@ const styles = {
         borderRadius: 5,
     },
     footer: {
-        marginTop: 30,
-
+        marginTop: 10
     },
     icon: {
         width: 26,

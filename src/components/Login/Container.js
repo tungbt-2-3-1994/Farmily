@@ -15,7 +15,7 @@ const Container = (props) => {
 
 const styles = StyleSheet.create({
     labelContainer: {
-        marginBottom: 10,
+        paddingBottom: 3
     }
 });
 
