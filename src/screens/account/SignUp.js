@@ -42,7 +42,7 @@ class SignUp extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.loggedIn) {
+        if (nextProps.userInfor.loggedIn || nextProps.userInfor.loading) {
             this.setState({ animating: false });
         }
     }
@@ -201,7 +201,7 @@ const styles = {
 
 const mapStateToProps = (state) => {
     return ({
-        loggedIn: state.userInfor.loggedIn,
+        userInfor: state.userInfor,
     });
 }
 

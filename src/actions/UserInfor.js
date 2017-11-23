@@ -32,6 +32,7 @@ export const normalSignUp = (name, email, pass, verify) => {
             .then(response => response.json())
             .then((tokenData) => {
                 if (tokenData.status == 'warning') {
+                    console.log('la sao');
                     const token = tokenData.token;
                     fetch('https://farm.ongnhuahdpe.com/session/register', {
                         method: 'POST',
@@ -51,6 +52,10 @@ export const normalSignUp = (name, email, pass, verify) => {
                         .then((responseData) => {
                             console.log('responseData', responseData);
                             if (typeof responseData.status == 'undefined' || responseData.status == 'error') {
+                                dispatch({
+                                    type: LOGIN_FAIL,
+                                    payload: false
+                                });
                                 Alert.alert('Email này đã được sử dụng rồi, mời bạn đăng ký email khác');
                             } else {
                                 dispatch({

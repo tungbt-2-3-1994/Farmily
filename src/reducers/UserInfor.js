@@ -12,7 +12,7 @@ export default (state = INITIAL, action) => {
         case LOGIN_SUCCESS:
             return { ...state, loggedIn: true, user: action.payload };
         case LOGIN_FAIL:
-            return { ...state, loggedIn: action.payload };
+            return { ...state, loggedIn: action.payload, loading: true };
         case LOGOUT:
             return { ...state, loggedIn: false, user: null, loading: true };
         case GET_CURRENT_LOCATION:

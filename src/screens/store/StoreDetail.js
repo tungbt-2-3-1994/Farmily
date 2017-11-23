@@ -161,8 +161,8 @@ class StoreDetail extends Component {
                                             :
                                             <Image source={require('../../img/noImage.jpg')} style={styles.flatItemFood} />
                                         }
-                                        <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: 'rgba(52, 52, 52, 0.1)' }}>
-                                            <Text style={{ margin: 2, textAlign: 'center', color: '#319C46', fontFamily: 'BodoniSvtyTwoOSITCTT-Bold' }}>{item.name}</Text>
+                                        <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: 'rgba(52, 52, 52, 0.8)' }}>
+                                            <Text style={{ margin: 2, textAlign: 'center', color: 'white', fontFamily: 'BodoniSvtyTwoOSITCTT-Bold' }}>{item.name}</Text>
                                         </View>
                                     </TouchableOpacity>
                                 )}
