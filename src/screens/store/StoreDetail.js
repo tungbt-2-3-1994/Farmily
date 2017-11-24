@@ -5,7 +5,7 @@ import {
     Image,
     TouchableOpacity,
     Dimensions,
-    FlatList, ActivityIndicator
+    FlatList, ActivityIndicator, StatusBar
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
@@ -19,6 +19,14 @@ const PARALLAX_HEADER_HEIGHT = 9 * window.width / 16;
 const STICKY_HEADER_HEIGHT = 50;
 
 import ImageSlider from 'react-native-image-slider';
+// import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
+
+// import SliderEntry from './../../components/SliderEntry';
+
+// const SLIDER_1_FIRST_ITEM = 1;
+
+import { sliderWidth, itemWidth } from '../../components/styles/SliderEntry.style';
+import { colors } from '../../components/styles/index.style';
 
 
 class StoreDetail extends Component {
@@ -26,8 +34,22 @@ class StoreDetail extends Component {
     state = {
         uri: '',
         position: 0,
-        interval: null
+        interval: null,
+        check: true,
+        // slider1ActiveSlide: SLIDER_1_FIRST_ITEM,
+        // slider1Ref: null
     }
+
+    // _renderItemWithParallax({ item, index }, parallaxProps) {
+    //     return (
+    //         <SliderEntry
+    //             data={item}
+    //             even={(index + 1) % 2 === 0}
+    //             parallax={true}
+    //             parallaxProps={parallaxProps}
+    //         />
+    //     );
+    // }
 
     static navigationOptions = {
         headerStyle: {
@@ -39,6 +61,7 @@ class StoreDetail extends Component {
         // headerBackTitleStyle: { color: 'white', fontFamily: 'Baskerville-BoldItalic', fontSize: 16 },
     }
 
+
     componentDidMount() {
         const { id } = this.props.navigation.state.params.marker;
         this.props.getStoreById(id);
@@ -48,44 +71,67 @@ class StoreDetail extends Component {
         if (this.props.loading == false) {
             let { images } = this.props.detailStore;
 
-            var data = [];
+            var entries = [];
 
             images.map((image) => {
-                data.push('http://farm.ongnhuahdpe.com'.concat(image));
-                return data;
+                // entries.push({ 'illustration': 'http://farm.ongnhuahdpe.com'.concat(image) });
+                entries.push('http://farm.ongnhuahdpe.com'.concat(image));
+                return entries;
             });
-
             return (
                 <View style={styles.foreground}>
                     <ImageSlider
-                        images={data}
+                        images={entries}
                         style={{ backgroundColor: 'white' }}
                         position={this.state.position}
                         onPositionChanged={position => this.setState({ position })} />
                 </View>
             );
         } else {
-            <View style={styles.foreground}>
-                <ActivityIndicator
-                    color='red'
-                    size="large"
-                />
-            </View>
+            return (
+                <View style={styles.foreground}>
+                    <ActivityIndicator
+                        color='red'
+                        size="large"
+                    />
+                </View>
+            );
         }
-
+        // return (
+        //     <View style={styles.foreground}>
+        //         <Carousel
+        //             ref={(c) => { if (!this.state.slider1Ref) { this.setState({ slider1Ref: c }); } }}
+        //             data={entries}
+        //             renderItem={this._renderItemWithParallax}
+        //             sliderWidth={sliderWidth}
+        //             itemWidth={itemWidth}
+        //             hasParallaxImages={true}
+        //             firstItem={SLIDER_1_FIRST_ITEM}
+        //             inactiveSlideScale={0.9}
+        //             inactiveSlideOpacity={0.6}
+        //             enableMomentum={false}
+        //             containerCustomStyle={styles.slider}
+        //             contentContainerCustomStyle={styles.sliderContentContainer}
+        //             loop={true}
+        //             loopClonesPerSide={2}
+        //             autoplay={true}
+        //             autoplayDelay={500}
+        //             autoplayInterval={3000}
+        //         />
+        //     </View>
+        // );
     }
 
     componentWillMount() {
-        setTimeout(() => {
-            let { images } = this.props.detailStore;
-            console.log(images);
-            this.setState({
-                interval: setInterval(() => {
-                    this.setState({ position: this.state.position === images.length - 1 ? 0 : this.state.position + 1 });
-                }, 5000)
-            });
-        }, 2000);
-
+        // setTimeout(() => {
+        //     let { images } = this.props.detailStore;
+        //     // console.log(images);
+        //     this.setState({
+        //         interval: setInterval(() => {
+        //             this.setState({ position: this.state.position === images.length - 1 ? 0 : this.state.position + 1 });
+        //         }, 5000)
+        //     });
+        // }, 3000);
     }
 
     componentWillUnmount() {
@@ -93,6 +139,15 @@ class StoreDetail extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        if (nextProps.loading == false && this.state.check) {
+            let { images } = nextProps.detailStore;
+            this.setState({
+                interval: setInterval(() => {
+                    this.setState({ position: this.state.position === images.length - 1 ? 0 : this.state.position + 1 });
+                }, 5000),
+                check: false
+            });
+        }
     }
 
 
@@ -180,6 +235,13 @@ class StoreDetail extends Component {
 }
 
 const styles = {
+    slider: {
+
+    },
+    sliderContentContainer: {
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     container: {
         flex: 1,
         backgroundColor: '#DEDEDE'
@@ -221,12 +283,12 @@ const styles = {
     foreground: {
         width: window.width,
         height: PARALLAX_HEADER_HEIGHT,
-        flexDirection: 'column',
+        // flexDirection: 'column',
         justifyContent: 'center',
-        backgroundColor: '#FFF',
+        backgroundColor: 'white',
         alignItems: 'center',
-        borderWidth: 1,
-        borderColor: '#D2D2D2',
+        // borderWidth: 1,
+        // borderColor: '#D2D2D2',
     },
     flatItem: {
         height: (window.width - 20) / 3,

@@ -32,7 +32,7 @@ export const normalSignUp = (name, email, pass, verify) => {
             .then(response => response.json())
             .then((tokenData) => {
                 if (tokenData.status == 'warning') {
-                    console.log('la sao');
+                    // console.log('la sao');
                     const token = tokenData.token;
                     fetch('https://farm.ongnhuahdpe.com/session/register', {
                         method: 'POST',
@@ -50,7 +50,7 @@ export const normalSignUp = (name, email, pass, verify) => {
                     })
                         .then((response) => response.json())
                         .then((responseData) => {
-                            console.log('responseData', responseData);
+                            // console.log('responseData', responseData);
                             if (typeof responseData.status == 'undefined' || responseData.status == 'error') {
                                 dispatch({
                                     type: LOGIN_FAIL,
@@ -71,7 +71,7 @@ export const normalSignUp = (name, email, pass, verify) => {
                         .done();
                 } else if (tokenData.status == 'success') {
                     // da dang nhap
-                    console.log('loggedIn', tokenData);
+                    // console.log('loggedIn', tokenData);
                     dispatch({
                         type: LOGIN_SUCCESS,
                         payload: tokenData.data
@@ -113,7 +113,7 @@ export const socialLogin = (name, userId, avatar_url) => {
                         .done();
                 } else if (tokenData.status == 'success') {
                     // da dang nhap
-                    console.log('loggedIn', tokenData);
+                    // console.log('loggedIn', tokenData);
                     dispatch({
                         type: LOGIN_SUCCESS,
                         payload: tokenData.data
@@ -197,7 +197,7 @@ export const normalLogin = (email, password) => {
                         .done();
                 } else if (tokenData.status == 'success') {
                     // da dang nhap
-                    console.log('loggedIn', tokenData);
+                    // console.log('loggedIn', tokenData);
                     dispatch({
                         type: LOGIN_SUCCESS,
                         payload: tokenData.data
