@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
     View,
     Text,
-    Image,
+    Image, ActivityIndicator,
     Button, TouchableOpacity, FlatList, Dimensions, Alert, ScrollView, Platform
 } from 'react-native';
 
@@ -39,7 +39,8 @@ class CompatibleMenu extends Component {
             },
             markers: [],
             tempData: [],
-            deleteData: []
+            deleteData: [],
+            check: false
         }
     }
 
@@ -89,7 +90,7 @@ class CompatibleMenu extends Component {
 
 
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps.userInfor);
+        // console.log(nextProps.userInfor);
         if (nextProps.userInfor.coords != null) {
             this.setState({
                 region: {
@@ -98,6 +99,12 @@ class CompatibleMenu extends Component {
                     latitudeDelta: 0.15,
                     longitudeDelta: 0.15
                 },
+            });
+        }
+        if (nextProps.nav.routes[0].index == 2 || nextProps.nav.routes[0].index == 3) {
+            console.log('asa');
+            this.setState({
+                check: false
             });
         }
     }
@@ -133,6 +140,9 @@ class CompatibleMenu extends Component {
     }
 
     chooseStore(id_store) {
+        this.setState({
+            check: true
+        });
         // console.log(this.state.tempData);
         this.props.addItemToCartAll(this.state.deleteData, this.state.tempData, id_store);
         // console.log(id_store);
@@ -194,12 +204,22 @@ class CompatibleMenu extends Component {
                         (<Text>Bạn cần đăng nhập để xem được thông tin cửa hàng phù hợp</Text>)
                     }
                 </View>
+                {this.state.check &&
+                    <ActivityIndicator
+                        color='red'
+                        size='large'
+                        style={styles.activityIndicator} />
+                }
             </View>
         );
     }
 }
 
 const styles = {
+    activityIndicator: {
+        position: 'absolute', top: 0, left: 0,
+        right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center'
+    },
     pin: {
         backgroundColor: 'transparent',
         justifyContent: 'center',
@@ -213,6 +233,7 @@ const mapStateToProps = (state) => {
         loggedIn: state.userInfor,
         menu: state.menu.compatibleMenu || [],
         cartId: state.cart.goods.data || [],
+        nav: state.nav
         // cartId: state.cart.goods.data[0].vegetable_in_store_id || -1
     });
 }

@@ -92,7 +92,9 @@ class Account extends Component {
 
         if (!nextProps.loggedIn.loggedIn) {
             this.setState({
-                animating: false
+                animating: false,
+                textEmail: '',
+                textPassword: ''
             });
         }
     }

@@ -48,7 +48,7 @@ class Menu extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (!nextProps.loadingMenu) {
-            console.log('asjas');
+            // console.log('asjas');
             this.setState({ loading: false });
         }
     }
@@ -69,7 +69,7 @@ class Menu extends Component {
     }
 
     componentWillUnmount() {
-        console.log('menu');
+        // console.log('menu');
     }
 
     getMenu = () => {
@@ -122,11 +122,11 @@ class Menu extends Component {
             this.setState({ loading: true });
 
             if (this.props.userInfor.coords != null) {
-                console.log('1');
+                // console.log('1');
                 let { coords } = this.props.userInfor;
                 this.props.getCompatibleStore(coords.latitude, coords.longitude, data, quantity);
             } else {
-                console.log('2');
+                // console.log('2');
                 this.props.getCompatibleStoreWithoutLocation(data, quantity);
             }
 
