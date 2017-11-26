@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
     View,
-    Text,
+    Text, PanResponder, TextInput, Modal,
     Image, Alert, DeviceEventEmitter,
     FlatList, Dimensions, TouchableOpacity, Platform, AppState
 } from 'react-native';
@@ -16,7 +16,7 @@ const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.15;
 const LONGITUDE_DELTA = ASPECT_RATIO * LATITUDE_DELTA;
 
-import { getAllItems, deleteItemInCart } from '../../actions/';
+import { getAllItems, deleteItemInCart, updateItemInCart } from '../../actions/';
 
 
 class Cart extends Component {
@@ -38,7 +38,11 @@ class Cart extends Component {
         },
         storeName: 'Cửa hàng',
         startLoc: '21.028094, 105.825468',
-        endLoc: '21.028094, 105.825468'
+        endLoc: '21.028094, 105.825468',
+        quantity: 0,
+        index: 0,
+        name: '',
+        click: false
     }
 
     static navigationOptions = {
@@ -66,6 +70,31 @@ class Cart extends Component {
             this.getDirections(startLoc, destinationLoc);
             return error;
         }
+    }
+
+    componentWillMount() {
+        this.panResponder = PanResponder.create({
+            onStartShouldSetPanResponder: (event, gestureState) => true,
+            onPanResponderGrant: this._onPanRespondGrant.bind(this),
+        });
+    }
+
+    _onPanRespondGrant(event, gestureState) {
+        if (event.nativeEvent.locationX === event.nativeEvent.pageX) {
+            this.setState({ click: false });
+        }
+    }
+
+    onDecrease = () => {
+        this.setState({
+            quantity: parseInt(this.state.quantity) - 1
+        });
+    }
+
+    onIncrease = () => {
+        this.setState({
+            quantity: parseInt(this.state.quantity) + 1
+        });
     }
 
 
@@ -155,6 +184,19 @@ class Cart extends Component {
         AppState.addEventListener('change', this._handleAppStateChange.bind(this));
     }
 
+    updateCart = () => {
+        // const { itemId } = this.props.navigation.state.params;
+        // console.log('update', this.state.text);
+        if (parseInt(this.state.quantity) <= 0 || isNaN(this.state.quantity)) {
+            Alert.alert('Bạn cần điền số lượng lớn hơn 0');
+        } else {
+            this.props.updateItemInCart(this.state.itemId, parseInt(this.state.quantity));
+            this.setState({
+                click: false
+            });
+        }
+    }
+
     render() {
 
         var latlng = {
@@ -218,11 +260,17 @@ class Cart extends Component {
                             renderItem={({ item }) => (
                                 <TouchableOpacity
                                     onPress={() => {
-                                        this.props.navigation.navigate('EditStack', {
+                                        this.setState({
+                                            click: !this.state.click,
+                                            name: item.vegetable_in_store.vegetable.name,
+                                            quantity: item.quantity,
+                                            itemId: item.id
+                                        });
+                                        {/* this.props.navigation.navigate('EditStack', {
                                             'uri': item.vegetable_in_store.vegetable.images.length != 0 ? item.vegetable_in_store.vegetable.images[0] : null,
                                             'quantity': item.quantity,
                                             'itemId': item.id
-                                        })
+                                        }) */}
                                     }}
                                     style={styles.callout}>
                                     {item.vegetable_in_store.vegetable.images.length != 0 ?
@@ -270,11 +318,58 @@ class Cart extends Component {
 
                         </View>
 
+                        <Modal
+                            visible={this.state.click}
+                            transparent={true}
+                            onRequestClose={() => this.setState({ click: false })}
+                        >
+                            <View
+                                {...this.panResponder.panHandlers}
+                                style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0, 0, 0, 0.4)' }}>
+                                <View style={{ width: width - 20, padding: 10, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 10 }}>
+                                    <Text style={{ textAlign: 'center' }}>
+                                        <Text style={{ fontSize: 16 }}>Số lượng</Text>
+                                        <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#388E3C' }}> {this.state.name} </Text>
+                                        <Text style={{ fontSize: 16 }}>muốn mua</Text>
+                                    </Text>
+
+                                    <View style={{ marginVertical: 10, flexDirection: 'row' }}>
+                                        <TouchableOpacity onPress={() => this.onDecrease()} style={{ marginRight: 10 }}>
+                                            <Text style={{ color: 'red', fontSize: 30 }}>-</Text>
+                                        </TouchableOpacity>
+                                        <TextInput
+                                            style={{ fontSize: 24, borderRadius: 5, borderColor: '#CACACA', borderWidth: 2, width: 100 }}
+                                            placeholder='Nhập số lượng'
+                                            onChangeText={(quantity) => this.setState({ quantity })}
+                                            value={this.state.quantity + ''}
+                                            keyboardType='numeric'
+                                            textAlign='center'
+                                            underlineColorAndroid='transparent'
+                                        />
+                                        <TouchableOpacity onPress={() => this.onIncrease()} style={{ marginLeft: 10 }}>
+                                            <Text style={{ color: '#388E3C', fontSize: 30 }}>+</Text>
+                                        </TouchableOpacity>
+                                    </View>
+
+                                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                        <TouchableOpacity onPress={() => { this.setState({ click: false }) }} style={{ backgroundColor: '#f7657b', margin: 15, width: width / 3, padding: 3, borderRadius: 5 }}>
+                                            <Text style={{ fontSize: width / 16, textAlign: 'center', color: 'white' }}>Hủy</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={() => { this.updateCart() }} style={{ backgroundColor: '#9fcf5f', margin: 15, width: width / 3, padding: 3, borderRadius: 5 }}>
+                                            <Text style={{ fontSize: width / 16, textAlign: 'center', color: 'white' }}>Đồng ý</Text>
+                                        </TouchableOpacity>
+                                    </View>
+
+                                </View>
+                            </View>
+                        </Modal>
+
                         <View style={styles.checkout}>
                             <TouchableOpacity onPress={() => { this.checkout() }} style={{ flexDirection: 'row', flex: 0.8, alignItems: 'center', justifyContent: 'center', backgroundColor: '#31A85E', borderRadius: 5 }}>
                                 <Text style={{ paddingLeft: 10, fontFamily: 'Baskerville-BoldItalic', color: 'white', fontSize: 20 }}>Thanh toán</Text>
                             </TouchableOpacity>
                         </View>
+
                     </View>
                 )
                 :
@@ -371,4 +466,4 @@ const mapStateToProps = (state) => {
     });
 }
 
-export default connect(mapStateToProps, { deleteItemInCart, getAllItems })(Cart);
+export default connect(mapStateToProps, { deleteItemInCart, getAllItems, updateItemInCart })(Cart);

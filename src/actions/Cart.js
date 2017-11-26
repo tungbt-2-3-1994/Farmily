@@ -219,10 +219,10 @@ export const updateItemInCart = (itemId, quantity) => {
                         type: UPDATE_ITEM_IN_CART,
                         payload: responseData
                     });
-                    const back = NavigationActions.back({
-                        routeName: 'CartStack',
-                    });
-                    dispatch(back);
+                    // const back = NavigationActions.back({
+                    //     routeName: 'CartStack',
+                    // });
+                    // dispatch(back);
                 } else if (responseData.status === 'error') {
                     Alert.alert('Gặp sự cố khi update giỏ');
                 }

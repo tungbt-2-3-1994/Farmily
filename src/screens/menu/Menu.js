@@ -198,10 +198,10 @@ class Menu extends Component {
                                             :
                                             <Image source={require('../../img/noImage.jpg')} style={styles.flatItemFood} />
                                         }
-                                        <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: 'rgba(52, 52, 52, 0.8)' }}>
-                                            <Text style={{ paddingVertical: 2, textAlign: 'center', color: 'white', fontFamily: 'BodoniSvtyTwoOSITCTT-Bold' }}>
+                                        <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: 'rgba(52, 52, 52, 0.8)', paddingVertical: 3 }}>
+                                            <Text style={{ textAlign: 'center', color: 'white', fontFamily: 'BodoniSvtyTwoOSITCTT-Bold' }}>
                                                 <Text style={{ fontSize: 14 }}>{item.name}</Text>
-                                                {item.quantity != 0 && <Text style={{ fontSize: 30, fontWeight: 'bold' }}> x {item.quantity} </Text>}
+                                                {item.quantity != 0 && <Text style={{ fontSize: 26, fontWeight: 'bold', color: '#f7657b' }}> x {item.quantity} </Text>}
                                             </Text>
 
                                         </View>
