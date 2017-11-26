@@ -72,9 +72,7 @@ class Cart extends Component {
     componentWillReceiveProps(nextProps) {
 
         if (nextProps.user != null && !nextProps.loadingGeo && nextProps.user.coords != null) {
-            // console.log('1');
             var { coords } = nextProps.user;
-            // console.log('location', coords);
             this.setState({
                 region: {
                     latitude: coords.latitude,
@@ -115,7 +113,6 @@ class Cart extends Component {
         if (!nextProps.cartLoading && nextProps.cart.length > 0) {
             var sum = 0;
             const { cart } = nextProps;
-            // console.log(cart);
             for (var i = 0; i < nextProps.cart.length; i++) {
                 sum += cart[i].quantity * cart[i].vegetable_in_store.price;
             }
@@ -158,14 +155,6 @@ class Cart extends Component {
         AppState.addEventListener('change', this._handleAppStateChange.bind(this));
     }
 
-    changeMoney = (money) => {
-        let result = '';
-        while (money / 1000 > 0) {
-            result = result + money / 1000 + '.';
-            money %= 1000;
-        }
-    }
-
     render() {
 
         var latlng = {
@@ -180,7 +169,6 @@ class Cart extends Component {
 
         let store;
         if (typeof (this.state.storeLocation) !== null) {
-            // console.log('la sao');
             store = (<MapView.Marker
                 key={this.state.storeLocation.latitude}
                 coordinate={storeLatLng}
@@ -199,7 +187,6 @@ class Cart extends Component {
                     </Image>}
             </MapView.Marker>);
         } else {
-            // console.log('la sao 2');
             store = null;
         }
 
@@ -246,15 +233,13 @@ class Cart extends Component {
 
                                     <View style={styles.textInfo}>
                                         <Text style={styles.calloutTitle}>{item.vegetable_in_store.vegetable.name}</Text>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            {/* <Icon name='attach-money' size={20} color='#7BC477' /> */}
-                                            <Text style={{ marginLeft: 5, fontSize: 16, color: '#7BC477' }}>Giá: </Text>
-                                            {/* <Text style={{ fontSize: 16, color: '#7BC477' }}>:</Text> */}
-                                            <Text style={{ marginLeft: 5, fontSize: 16 }}>{item.vegetable_in_store.price} đồng</Text>
-                                        </View>
                                         <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 2 }}>
                                             <Text style={{ marginLeft: 5, fontSize: 16, color: '#7BC477' }}>Số lượng: </Text>
                                             <Text style={{ marginLeft: 5, fontSize: 16 }}>{item.quantity} kg</Text>
+                                        </View>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                            <Text style={{ marginLeft: 5, fontSize: 16, color: '#7BC477' }}>Giá: </Text>
+                                            <Text style={{ marginLeft: 5, fontSize: 16 }}>{new Intl.NumberFormat('de-DE').format(item.vegetable_in_store.price)} * {item.quantity} = {new Intl.NumberFormat('de-DE').format(item.vegetable_in_store.price * item.quantity)} đồng</Text>
                                         </View>
                                         <TouchableOpacity onPress={() => {
                                             Alert.alert(
@@ -339,14 +324,11 @@ const styles = {
     callout: {
         flex: 1,
         width: width - 10,
-        height: 80,
         flexDirection: 'row',
         borderRadius: 5,
         borderWidth: 1,
         borderColor: '#CACACA',
-        paddingLeft: 5,
-        paddingTop: 5,
-        paddingBottom: 5,
+        padding: 5,
         backgroundColor: 'white',
         marginBottom: 5
     },

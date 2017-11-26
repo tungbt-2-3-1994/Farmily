@@ -3,7 +3,7 @@ import {
     Modal,
     View,
     Text,
-    Image,
+    Image, PanResponder, StatusBar, TextInput,
     Button, TouchableOpacity, FlatList, Dimensions, Alert, Platform, ActivityIndicator
 } from 'react-native';
 
@@ -23,17 +23,24 @@ class Menu extends Component {
             vegetables: [],
             temp: 0,
             visible: false,
-            loading: false
+            loading: false,
+            toog: false,
+            name: '',
+            quantity: 0,
+            index: 0
         }
     }
 
     componentWillMount() {
         // this.props.getAllVegetables();
+        this.panResponder = PanResponder.create({
+            onStartShouldSetPanResponder: (event, gestureState) => true,
+            onPanResponderGrant: this._onPanRespondGrant.bind(this),
+        });
     }
 
 
     componentDidMount() {
-
     }
 
     static navigationOptions = {
@@ -48,28 +55,22 @@ class Menu extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (!nextProps.loadingMenu) {
-            // console.log('asjas');
             this.setState({ loading: false });
         }
     }
 
-    // getMenu = () => {
-    //     let { vegetable } = this.props;
-    //     this.props.updateMenu(vegetable);
-    // }
-
-    toogleMenuItem = (index) => {
-        // console.log('asas');
+    toogMenuItem = (index) => {
         let { vegetable } = this.props;
+        if (vegetable.vegetables[index].check == false) {
+            vegetable.vegetables[index].quantity = 1;
+        } else {
+            vegetable.vegetables[index].quantity = 0;
+        }
         vegetable.vegetables[index].check = !vegetable.vegetables[index].check;
         this.props.updateMenu(vegetable);
-        // this.setState({
-        //     vegetables: this.props.vegetable
-        // });
     }
 
     componentWillUnmount() {
-        // console.log('menu');
     }
 
     getMenu = () => {
@@ -134,6 +135,37 @@ class Menu extends Component {
         }
     }
 
+    _onPanRespondGrant(event, gestureState) {
+        if (event.nativeEvent.locationX === event.nativeEvent.pageX) {
+            this.setState({ toog: false });
+        }
+    }
+
+    onDecrease = () => {
+        this.setState({
+            quantity: parseInt(this.state.quantity) - 1
+        });
+    }
+
+    onIncrease = () => {
+        this.setState({
+            quantity: parseInt(this.state.quantity) + 1
+        });
+    }
+
+    updateCart = () => {
+        if (parseInt(this.state.quantity) <= 0) {
+            Alert.alert('Bạn cần điền số lượng lớn hơn 0');
+        } else {
+            // let { data } = this.props.navigation.state.params;
+            this.props.menu.menu.vegetables[this.state.index].quantity = parseInt(this.state.quantity);
+            this.props.menu.menu.vegetables[this.state.index].check = true;
+            this.props.updateMenu(this.props.menu.menu);
+            this.setState({
+                toog: false
+            });
+        }
+    }
 
     render() {
         // console.log('re render')
@@ -151,10 +183,15 @@ class Menu extends Component {
                                 data={this.props.vegetable.vegetables}
                                 renderItem={({ item, index }) => (
                                     <TouchableOpacity style={styles.flatItem} onPress={() => {
-                                        console.log(item);
                                         let { vegetable } = this.props;
                                         this.props.updateMenu(vegetable);
-                                        this.props.navigation.navigate('EditDir', { 'quantity': item.quantity, 'data': index, 'uri': item.images.length != 0 ? item.images[0] : null });
+                                        this.setState({
+                                            toog: !this.state.toog,
+                                            name: item.name,
+                                            quantity: item.quantity,
+                                            index: index
+                                        });
+                                        {/* this.props.navigation.navigate('EditDir', { 'quantity': item.quantity, 'data': index, 'uri': item.images.length != 0 ? item.images[0] : null }); */ }
                                     }}>
                                         {item.images.length !== 0 ?
                                             <Image source={{ uri: item.images[0] }} style={styles.flatItemFood} />
@@ -162,9 +199,13 @@ class Menu extends Component {
                                             <Image source={require('../../img/noImage.jpg')} style={styles.flatItemFood} />
                                         }
                                         <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: 'rgba(52, 52, 52, 0.8)' }}>
-                                            <Text style={{ margin: 2, textAlign: 'center', color: 'white', fontFamily: 'BodoniSvtyTwoOSITCTT-Bold' }}>{item.name}</Text>
+                                            <Text style={{ paddingVertical: 2, textAlign: 'center', color: 'white', fontFamily: 'BodoniSvtyTwoOSITCTT-Bold' }}>
+                                                <Text style={{ fontSize: 14 }}>{item.name}</Text>
+                                                {item.quantity != 0 && <Text style={{ fontSize: 30, fontWeight: 'bold' }}> x {item.quantity} </Text>}
+                                            </Text>
+
                                         </View>
-                                        <TouchableOpacity onPress={() => this.toogleMenuItem(index)} style={{ position: 'absolute', right: 10, top: 10 }}>
+                                        <TouchableOpacity onPress={() => this.toogMenuItem(index)} style={{ position: 'absolute', right: 10, top: 10 }}>
                                             {item.check == false ?
                                                 <Icon name='shopping-cart' size={30} color='rgba(50, 50, 40, 0.4)' style={{ backgroundColor: 'transparent' }} />
                                                 :
@@ -188,6 +229,55 @@ class Menu extends Component {
                                     size="large"
                                     style={styles.activityIndicator} />
                             }
+                            <Modal
+                                visible={this.state.toog}
+                                transparent={true}
+                                onRequestClose={() => this.setState({ toog: false })}
+                            >
+                                <View
+                                    {...this.panResponder.panHandlers}
+                                    style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0, 0, 0, 0.4)' }}>
+                                    <View style={{ width: width - 20, padding: 10, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 10 }}>
+                                        <Text style={{ textAlign: 'center' }}>
+                                            <Text style={{ fontSize: 16 }}>Số lượng</Text>
+                                            <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#388E3C' }}> {this.state.name} </Text>
+                                            <Text style={{ fontSize: 16 }}>muốn mua</Text>
+                                        </Text>
+
+                                        <View style={{ marginVertical: 10, flexDirection: 'row' }}>
+                                            <TouchableOpacity onPress={() => this.onDecrease()} style={{ marginRight: 10 }}>
+                                                <Text style={{ color: 'red', fontSize: 30 }}>-</Text>
+                                            </TouchableOpacity>
+                                            <TextInput
+                                                style={{ fontSize: 24, borderRadius: 5, borderColor: '#CACACA', borderWidth: 2, width: 100 }}
+                                                placeholder='Nhập số lượng'
+                                                onChangeText={(quantity) => this.setState({ quantity })}
+                                                value={this.state.quantity + ''}
+                                                keyboardType='numeric'
+                                                textAlign='center'
+                                                underlineColorAndroid='transparent'
+                                            />
+                                            <TouchableOpacity onPress={() => this.onIncrease()} style={{ marginLeft: 10 }}>
+                                                <Text style={{ color: '#388E3C', fontSize: 30 }}>+</Text>
+                                            </TouchableOpacity>
+                                        </View>
+
+                                        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                            <TouchableOpacity onPress={() => { this.setState({ toog: false }) }} style={{ backgroundColor: '#f7657b', margin: 15, width: width / 3, padding: 3, borderRadius: 5 }}>
+                                                <Text style={{ fontSize: width / 16, textAlign: 'center', color: 'white' }}>Hủy</Text>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity onPress={() => { this.updateCart() }} style={{ backgroundColor: '#9fcf5f', margin: 15, width: width / 3, padding: 3, borderRadius: 5 }}>
+                                                <Text style={{ fontSize: width / 16, textAlign: 'center', color: 'white' }}>Đồng ý</Text>
+                                            </TouchableOpacity>
+                                        </View>
+
+                                        {/* <TouchableOpacity style={styles.accept} onPress={() => this.updateCart()}>
+                                                <Text style={{ color: 'white', fontSize: 20, fontFamily: 'Baskerville-BoldItalic' }}>Đồng ý</Text>
+                                            </TouchableOpacity> */}
+
+                                    </View>
+                                </View>
+                            </Modal>
                         </View>
                     )
                     : <View><Text></Text></View>
@@ -200,6 +290,11 @@ class Menu extends Component {
 }
 
 const styles = {
+    popupContainer: {
+        flex: 1,
+        alignItems: 'center',
+        backgroundColor: 'white',
+    },
     activityIndicator: {
         position: 'absolute', top: 0, left: 0,
         right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center'

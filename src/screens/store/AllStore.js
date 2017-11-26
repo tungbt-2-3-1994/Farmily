@@ -379,10 +379,7 @@ class AllStore extends Component {
                         </View>
                     </View>
                 </Modal>
-                {/* {
-                    this.state.toogle &&
-                    
-                } */}
+                
                 <TouchableOpacity style={styles.floatingBtn} onPress={() => { this.toogleNearby() }}>
                     <Icon name='zoom-in' size={25} color='white' />
                 </TouchableOpacity>

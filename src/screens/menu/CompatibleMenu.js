@@ -102,7 +102,7 @@ class CompatibleMenu extends Component {
             });
         }
         if (nextProps.nav.routes[0].index == 2 || nextProps.nav.routes[0].index == 3) {
-            console.log('asa');
+            // console.log('asa');
             this.setState({
                 check: false
             });
