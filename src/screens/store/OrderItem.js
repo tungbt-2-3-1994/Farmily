@@ -252,6 +252,7 @@ class OrderItem extends Component {
                                         placeholder='Nhập số lượng'
                                         keyboardType='numeric'
                                         returnKeyType='done'
+                                        underlineColorAndroid='transparent'
                                         onChangeText={(text) => { this.setState({ quantityInput: text }) }}
                                         value={this.state.quantityInput}
                                     />

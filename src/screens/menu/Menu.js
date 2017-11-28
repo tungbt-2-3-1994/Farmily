@@ -238,13 +238,13 @@ class Menu extends Component {
                                     {...this.panResponder.panHandlers}
                                     style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0, 0, 0, 0.4)' }}>
                                     <View style={{ width: width - 20, padding: 10, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 10 }}>
-                                        <Text style={{ textAlign: 'center' }}>
+                                        <Text style={{ textAlign: 'center', marginTop: 5 }}>
                                             <Text style={{ fontSize: 16 }}>Số lượng</Text>
                                             <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#388E3C' }}> {this.state.name} </Text>
                                             <Text style={{ fontSize: 16 }}>muốn mua</Text>
                                         </Text>
 
-                                        <View style={{ marginVertical: 10, flexDirection: 'row' }}>
+                                        <View style={{ marginVertical: 10, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                                             <TouchableOpacity onPress={() => this.onDecrease()} style={{ marginRight: 10 }}>
                                                 <Text style={{ color: 'red', fontSize: 30 }}>-</Text>
                                             </TouchableOpacity>

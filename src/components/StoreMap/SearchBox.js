@@ -15,7 +15,7 @@ const SearchBox = ({ onChangeText, onCancel, toggleSearch }) => {
                     <Icon name="search" size={15} color="#FF5E3A" />
                     <Input
                         style={styles.inputSearch}
-                        placeholder="Choose location"
+                        placeholder="Tìm kiếm cửa hàng"
                         onChangeText={onChangeText}
                         onFocus={toggleSearch}
                     />

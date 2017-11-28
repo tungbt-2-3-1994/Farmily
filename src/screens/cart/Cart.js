@@ -287,7 +287,7 @@ class Cart extends Component {
                                         </View>
                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                             <Text style={{ marginLeft: 5, fontSize: 16, color: '#7BC477' }}>Giá: </Text>
-                                            <Text style={{ marginLeft: 5, fontSize: 16 }}>{new Intl.NumberFormat('de-DE').format(item.vegetable_in_store.price)} * {item.quantity} = {new Intl.NumberFormat('de-DE').format(item.vegetable_in_store.price * item.quantity)} đồng</Text>
+                                            <Text style={{ marginLeft: 5, fontSize: 16 }}>{(item.vegetable_in_store.price).toString().replace(/(\d)(?=(\d{3})+$)/g, '$1,')} * {item.quantity} = {(item.vegetable_in_store.price * item.quantity).toString().replace(/(\d)(?=(\d{3})+$)/g, '$1,')} đồng</Text>
                                         </View>
                                         <TouchableOpacity onPress={() => {
                                             Alert.alert(
@@ -312,7 +312,7 @@ class Cart extends Component {
                             <Text></Text>
                             <Text>
                                 <Text>Tổng: </Text>
-                                <Text style={{ color: '#31A85E', fontSize: 20, paddingRight: 10, paddingBottom: 5 }}>{new Intl.NumberFormat('de-DE').format(this.state.price)} </Text>
+                                <Text style={{ color: '#31A85E', fontSize: 20, paddingRight: 10, paddingBottom: 5 }}>{this.state.price.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1,')} </Text>
                                 <Text>đồng</Text>
                             </Text>
 
@@ -327,13 +327,13 @@ class Cart extends Component {
                                 {...this.panResponder.panHandlers}
                                 style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0, 0, 0, 0.4)' }}>
                                 <View style={{ width: width - 20, padding: 10, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 10 }}>
-                                    <Text style={{ textAlign: 'center' }}>
+                                    <Text style={{ textAlign: 'center', marginTop: 5 }}>
                                         <Text style={{ fontSize: 16 }}>Số lượng</Text>
                                         <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#388E3C' }}> {this.state.name} </Text>
                                         <Text style={{ fontSize: 16 }}>muốn mua</Text>
                                     </Text>
 
-                                    <View style={{ marginVertical: 10, flexDirection: 'row' }}>
+                                    <View style={{ marginVertical: 10, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                                         <TouchableOpacity onPress={() => this.onDecrease()} style={{ marginRight: 10 }}>
                                             <Text style={{ color: 'red', fontSize: 30 }}>-</Text>
                                         </TouchableOpacity>

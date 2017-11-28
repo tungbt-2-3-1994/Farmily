@@ -138,7 +138,7 @@ export const addItemToCart = (vegetableId, storeId, quantity) => {
                         type: ADD_ITEM_TO_CART,
                         payload: responseData
                     });
-                    Alert.alert('Thêm thành công hàng hóa vào giỏ hàng');
+                    Alert.alert('Thêm vào giỏ hàng thành công');
                 } else if (responseData.status === 'error') {
                     Alert.alert('Bạn cần đăng nhập mới có thể thêm hàng vào giỏ');
                     const naviToAcc = NavigationActions.navigate({
