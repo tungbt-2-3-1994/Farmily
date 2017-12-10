@@ -22,6 +22,8 @@ const { width, height } = Dimensions.get('window');
 
 import { Fumi } from 'react-native-textinput-effects';
 
+import { headerStyle } from '../Style';
+
 
 import { normalLogin, logout, autoCheckLogin, getAllItems, socialLogin } from '../../actions';
 
@@ -32,7 +34,7 @@ class Account extends Component {
             backgroundColor: '#388E3C',
         },
         headerBackTitle: null,
-        headerTitleStyle: { color: 'white', fontFamily: 'Baskerville-BoldItalic', fontSize: 20 },
+        headerTitleStyle: headerStyle,
     }
 
     state = {

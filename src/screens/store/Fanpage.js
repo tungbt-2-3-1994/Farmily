@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { View, WebView, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
 
+import { headerStyle } from '../Style';
+
 class Fanpage extends Component {
 
     static navigationOptions = {
@@ -9,7 +11,7 @@ class Fanpage extends Component {
         },
         headerBackTitle: null,
         headerTintColor: 'white',
-        headerTitleStyle: { color: 'white', fontFamily: 'Baskerville-BoldItalic', fontSize: 20 },
+        headerTitleStyle: headerStyle,
     }
 
     render() {

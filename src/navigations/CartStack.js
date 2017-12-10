@@ -6,7 +6,6 @@ import { StackNavigator } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Cart from '../screens/cart/Cart';
-import Edit from '../screens/cart/Edit';
 import Checkout from '../screens/cart/Checkout';
 
 
@@ -15,12 +14,6 @@ export const CartStack = StackNavigator({
         screen: Cart,
         navigationOptions: {
             title: 'Giỏ hàng'
-        }
-    },
-    EditStack: {
-        screen: Edit,
-        navigationOptions: {
-            title: 'Điều chỉnh'
         }
     },
     CheckoutStack: {

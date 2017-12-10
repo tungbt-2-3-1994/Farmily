@@ -7,7 +7,6 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Menu from '../screens/menu/Menu';
 import CompatibleMenu from '../screens/menu/CompatibleMenu';
-import EditDir from '../screens/menu/EditDir';
 
 export const MenuStack = StackNavigator({
     Menu: {
@@ -23,12 +22,6 @@ export const MenuStack = StackNavigator({
             headerBackTitle: null
         }
     },
-    EditDir: {
-        screen: EditDir,
-        navigationOptions: {
-            title: 'Chỉnh sửa'
-        }
-    }
 }, {
 
     });

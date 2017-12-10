@@ -30,6 +30,8 @@ import Permissions from 'react-native-permissions';
 
 import RNANAndroidSettingsLibrary from 'react-native-android-settings-library';
 
+import { headerStyle } from '../Style';
+
 class AllStore extends Component {
 
     static navigationOptions = {
@@ -37,7 +39,7 @@ class AllStore extends Component {
             backgroundColor: '#388E3C',
         },
         headerBackTitle: null,
-        headerTitleStyle: { color: 'white', fontFamily: 'Baskerville-BoldItalic', fontSize: 20 }
+        headerTitleStyle: headerStyle,
     }
 
     constructor(props) {
@@ -301,7 +303,7 @@ class AllStore extends Component {
     emptyListComponent() {
         return (
             <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-                <Text style={{ fontFamily: 'Baskerville-BoldItalic', fontSize: 20 }}>Có lỗi khi tìm các cửa hàng quanh bạn</Text>
+                <Text style={{ fontSize: 20 }}>Có lỗi khi tìm các cửa hàng quanh bạn</Text>
             </View>)
     }
 
@@ -379,9 +381,9 @@ class AllStore extends Component {
                         </View>
                     </View>
                 </Modal>
-                
+
                 <TouchableOpacity style={styles.floatingBtn} onPress={() => { this.toogleNearby() }}>
-                    <Icon name='zoom-in' size={25} color='white' />
+                    <Image source={require('../../img/nearby.png')} style={{ width: width / 13, height: width / 13, resizeMode: 'contain' }} />
                 </TouchableOpacity>
 
                 {this.state.locationPermission != 'authorized' && <TouchableOpacity style={styles.floatingBtn2} onPress={() => { this._alertForLocationPermission() }}>
@@ -398,8 +400,7 @@ class AllStore extends Component {
 }
 
 const styles = {
-    floatingBtn: { justifyContent: 'center', alignItems: 'center', position: 'absolute', right: 10, bottom: 10, width: width / 7, height: width / 7, borderRadius: width / 14, backgroundColor: 'rgba(255, 0, 0, 0.3)' },
-    floatingBtn2: { justifyContent: 'center', alignItems: 'center', position: 'absolute', right: 10, bottom: 20 + width / 7, width: width / 7, height: width / 7, borderRadius: width / 14, backgroundColor: 'rgba(255, 0, 0, 0.3)' },
+    floatingBtn: { justifyContent: 'center', alignItems: 'center', position: 'absolute', right: 10, bottom: 10, width: width / 7, height: width / 7, borderRadius: width / 14, backgroundColor: '#388E3C' },
     flItem: { flex: 1, width: width, height: 40, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' },
     activityIndicator: {
         position: 'absolute', top: 0, left: 0,

@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
 import { View, WebView, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 
 import { goBackToMain, cancelCheckout } from '../../actions';
 
 var e;
 
+import { headerStyle } from '../Style';
+
 class Checkout extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            
+
         }
         e = this;
         this.goBack = this.goBack.bind(this);
@@ -25,9 +27,9 @@ class Checkout extends Component {
         },
         headerBackTitle: null,
         headerTintColor: 'white',
-        headerTitleStyle: { color: 'white', fontFamily: 'Baskerville-BoldItalic', fontSize: 20 },
-        headerLeft: (<TouchableOpacity style={{ marginLeft: 5 }} onPress={() => { e.goBack() }}>
-            <Icon name='chevron-left' size={20} color='white' />
+        headerTitleStyle: headerStyle,
+        headerLeft: (<TouchableOpacity style={{ marginLeft: 10, marginTop: 1 }} onPress={() => { e.goBack() }}>
+            <Icon name='ios-arrow-back-outline' size={35} color='white' />
         </TouchableOpacity>)
     }
 

@@ -18,6 +18,8 @@ const window = Dimensions.get('window');
 const PARALLAX_HEADER_HEIGHT = 9 * window.width / 16;
 const STICKY_HEADER_HEIGHT = 50;
 
+import { headerStyle } from '../Style';
+
 import ImageSlider from 'react-native-image-slider';
 // import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
 
@@ -57,7 +59,7 @@ class StoreDetail extends Component {
         },
         headerBackTitle: null,
         headerTintColor: 'white',
-        headerTitleStyle: { color: 'white', fontFamily: 'Baskerville-BoldItalic', fontSize: 20 },
+        headerTitleStyle: headerStyle,
         // headerBackTitleStyle: { color: 'white', fontFamily: 'Baskerville-BoldItalic', fontSize: 16 },
     }
 

@@ -17,6 +17,7 @@ import ButtonLogin from '../../components/Login/Button';
 import { normalSignUp } from '../../actions';
 
 import { Hideo } from 'react-native-textinput-effects';
+import { headerStyle } from '../Style';
 
 class SignUp extends Component {
 
@@ -38,7 +39,7 @@ class SignUp extends Component {
         headerMode: 'none',
         headerBackTitle: null,
         headerTintColor: 'white',
-        headerTitleStyle: { color: 'white', fontFamily: 'Baskerville-BoldItalic', fontSize: 20 },
+        headerTitleStyle: headerStyle,
     }
 
     componentWillReceiveProps(nextProps) {

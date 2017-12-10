@@ -18,6 +18,8 @@ const LONGITUDE_DELTA = ASPECT_RATIO * LATITUDE_DELTA;
 
 import { getAllItems, deleteItemInCart, updateItemInCart } from '../../actions/';
 
+import { headerStyle } from '../Style';
+
 
 class Cart extends Component {
 
@@ -50,7 +52,7 @@ class Cart extends Component {
             backgroundColor: '#388E3C',
         },
         headerBackTitle: null,
-        headerTitleStyle: { color: 'white', fontFamily: 'Baskerville-BoldItalic', fontSize: 20 },
+        headerTitleStyle: headerStyle,
     }
 
     async getDirections(startLoc, destinationLoc) {
@@ -168,7 +170,7 @@ class Cart extends Component {
     emptyListComponent() {
         return (
             <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-                <Text style={{ fontFamily: 'Baskerville-BoldItalic', fontSize: 20 }}>Giỏ hàng của bạn chưa có gì</Text>
+                <Text style={{ fontSize: 20, textAlign: 'center', color: '#388E3C' }}>Giỏ hàng của bạn chưa có gì</Text>
             </View>)
     }
 
@@ -266,11 +268,6 @@ class Cart extends Component {
                                             quantity: item.quantity,
                                             itemId: item.id
                                         });
-                                        {/* this.props.navigation.navigate('EditStack', {
-                                            'uri': item.vegetable_in_store.vegetable.images.length != 0 ? item.vegetable_in_store.vegetable.images[0] : null,
-                                            'quantity': item.quantity,
-                                            'itemId': item.id
-                                        }) */}
                                     }}
                                     style={styles.callout}>
                                     {item.vegetable_in_store.vegetable.images.length != 0 ?
@@ -308,7 +305,7 @@ class Cart extends Component {
                             keyExtractor={item => item.id}
                             ListEmptyComponent={this.emptyListComponent.bind(this)}
                         />
-                        <View style={{ flexDirection: 'row', flex: 0.1, marginBottom: 53, justifyContent: 'space-between' }}>
+                        <View style={{ flexDirection: 'row', flex: 0.1, marginBottom: 58, justifyContent: 'space-between', paddingRight: 10 }}>
                             <Text></Text>
                             <Text>
                                 <Text>Tổng: </Text>
@@ -364,11 +361,15 @@ class Cart extends Component {
                             </View>
                         </Modal>
 
-                        <View style={styles.checkout}>
+                        <TouchableOpacity style={styles.floatingBtn} onPress={() => { this.checkout() }}>
+                            <Icon name='credit-card' size={25} color='white' />
+                        </TouchableOpacity>
+
+                        {/* <View style={styles.checkout}>
                             <TouchableOpacity onPress={() => { this.checkout() }} style={{ flexDirection: 'row', flex: 0.8, alignItems: 'center', justifyContent: 'center', backgroundColor: '#31A85E', borderRadius: 5 }}>
                                 <Text style={{ paddingLeft: 10, fontFamily: 'Baskerville-BoldItalic', color: 'white', fontSize: 20 }}>Thanh toán</Text>
                             </TouchableOpacity>
-                        </View>
+                        </View> */}
 
                     </View>
                 )
@@ -383,6 +384,7 @@ class Cart extends Component {
 }
 
 const styles = {
+    floatingBtn: { justifyContent: 'center', alignItems: 'center', position: 'absolute', right: 3 * width / 7, bottom: 10, width: width / 7, height: width / 7, borderRadius: width / 14, backgroundColor: '#388E3C' },
     pin: {
         backgroundColor: 'transparent',
         justifyContent: 'center',
@@ -425,7 +427,7 @@ const styles = {
         borderColor: '#CACACA',
         padding: 5,
         backgroundColor: 'white',
-        marginBottom: 5
+        marginBottom: 5,
     },
     calloutPhoto: {
         flex: 0.2,
@@ -439,7 +441,6 @@ const styles = {
         fontSize: 18,
         fontWeight: 'bold',
         paddingLeft: 5,
-        fontFamily: 'Baskerville-BoldItalic',
         color: '#7BC477'
     },
     calloutDescription: {

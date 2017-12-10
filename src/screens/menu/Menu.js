@@ -9,6 +9,8 @@ import {
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { connect } from 'react-redux';
+
+import { headerStyle } from '../Style';
 // import PopupDialog, { SlideAnimation, DialogTitle, DialogButton, } from 'react-native-popup-dialog';
 
 import { getAllVegetables, updateMenu, getCompatibleStore, getCompatibleStoreWithoutLocation } from '../../actions';
@@ -49,7 +51,7 @@ class Menu extends Component {
         },
         headerBackTitle: null,
         headerTintColor: 'white',
-        headerTitleStyle: { color: 'white', fontFamily: 'Baskerville-BoldItalic', fontSize: 20 },
+        headerTitleStyle: headerStyle,
     }
 
 
@@ -299,7 +301,7 @@ const styles = {
         position: 'absolute', top: 0, left: 0,
         right: 0, bottom: 0, alignItems: 'center', justifyContent: 'center'
     },
-    floatingBtn: { justifyContent: 'center', alignItems: 'center', position: 'absolute', right: 10, bottom: 10, width: width / 7, height: width / 7, borderRadius: width / 14, backgroundColor: 'rgba(255, 0, 0, 0.3)' },
+    floatingBtn: { justifyContent: 'center', alignItems: 'center', position: 'absolute', right: 10, bottom: 10, width: width / 7, height: width / 7, borderRadius: width / 14, backgroundColor: '#388E3C' },
     container: {
         flex: 1,
         justifyContent: 'center',

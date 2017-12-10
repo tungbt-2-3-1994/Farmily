@@ -5,7 +5,7 @@ import {
     Image,
     Button, TouchableOpacity, Dimensions, TextInput, KeyboardAvoidingView,
     Alert,
-    Platform
+    Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
@@ -21,6 +21,10 @@ const window = Dimensions.get('window');
 const PARALLAX_HEADER_HEIGHT = 9 * window.width / 16;
 const STICKY_HEADER_HEIGHT = 50;
 const AVATAR_SIZE = 120;
+
+const { width, height } = Dimensions.get('window');
+
+import { headerStyle } from '../Style';
 
 const netural = [
     {
@@ -85,25 +89,28 @@ const netural = [
         'PPM': '560-840'
     },
     {
-        //cu cai
-        'pH': '7.0',
-        'cF': '15-20',
-        'EC': '1.5-2.0',
-        'PPM': '1050-1400'
+        'pH': '5.5-6.0',
+        'cF': '20-25',
+        'EC': '2.0-2.5',
+        'PPM': '1400-1750'
     },
     {
-        //others
-        'pH': '6.5-7.0',
-        'cF': '14-18',
-        'EC': '1.4-1.8',
-        'PPM': '980-1260'
+        'pH': '5.5-6.0',
+        'cF': '20-25',
+        'EC': '2.0-2.5',
+        'PPM': '1400-1750'
     },
     {
-        //others
-        'pH': '5.8-6.0',
-        'cF': '17-25',
-        'EC': '1.7-2.5',
-        'PPM': '1190-1750'
+        'pH': '5.5-6.0',
+        'cF': '20-25',
+        'EC': '2.0-2.5',
+        'PPM': '1400-1750'
+    },
+    {
+        'pH': '5.5-6.0',
+        'cF': '20-25',
+        'EC': '2.0-2.5',
+        'PPM': '1400-1750'
     },
 ];
 
@@ -126,7 +133,7 @@ class OrderItem extends Component {
         },
         headerBackTitle: null,
         headerTintColor: 'white',
-        headerTitleStyle: { color: 'white', fontFamily: 'Baskerville-BoldItalic', fontSize: 20 },
+        headerTitleStyle: headerStyle,
         headerRight: <TouchableOpacity style={{ marginRight: 5 }} onPress={() => { navigation.navigate('CartStack') }}><Icon size={20} color='white' name='shopping-cart' /></TouchableOpacity>
     });
 
@@ -215,6 +222,7 @@ class OrderItem extends Component {
 
     render() {
         const vegetableId = this.props.navigation.state.params.item.id;
+        console.log(vegetableId);
         const { onScroll = () => { } } = this.props;
         const { item } = this.props.navigation.state.params;
         return (
@@ -236,7 +244,7 @@ class OrderItem extends Component {
                             <InforF infor={netural[vegetableId].pH} text='pH' />
                             <InforF infor={netural[vegetableId].PPM} text='PPM' />
                         </View>
-                        <View style={{ backgroundColor: '#FFFFFF', marginTop: 5 }}>
+                        <View style={{ backgroundColor: '#FFFFFF', marginTop: 5, paddingTop: 5, }}>
                             <Text style={styles.text}>Chi tiết sản phẩm</Text>
                             <Text style={{ fontSize: 16, textAlign: 'left', justifyContent: 'center', padding: 10 }}>{item.description}</Text>
                             <View style={styles.textContainer}>
@@ -263,12 +271,15 @@ class OrderItem extends Component {
                         </View>
                     </View>
                 </ParallaxScrollView>
-                <View style={styles.add}>
+                <TouchableOpacity style={styles.floatingBtn} onPress={() => { this.addItemToCart() }}>
+                    <Icon size={25} color='white' name='add-shopping-cart' />
+                </TouchableOpacity>
+                {/* <View style={styles.add}>
                     <TouchableOpacity onPress={() => { this.addItemToCart() }} style={{ flexDirection: 'row', flex: 0.8, alignItems: 'center', justifyContent: 'center', backgroundColor: '#31A85E', borderRadius: 5 }}>
                         <Icon size={20} color='white' name='add-shopping-cart' />
                         <Text style={{ paddingLeft: 10, fontFamily: 'Baskerville-BoldItalic', color: 'white', fontSize: 20 }}>Thêm vào giỏ hàng</Text>
                     </TouchableOpacity>
-                </View>
+                </View> */}
             </View>
         );
     }
@@ -283,6 +294,7 @@ const styles = {
         justifyContent: 'center',
         flexDirection: 'row'
     },
+    floatingBtn: { justifyContent: 'center', alignItems: 'center', position: 'absolute', right: 10, bottom: 10, width: width / 7, height: width / 7, borderRadius: width / 14, backgroundColor: '#388E3C' },
     textContainer: { flex: 1, flexDirection: 'row', justifyContent: 'space-between', paddingRight: 10, alignItems: 'center' },
     container: {
         flex: 1,

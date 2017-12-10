@@ -18,6 +18,8 @@ const ASPECT_RATIO = width / height;
 const LATITUDE_DELTA = 0.0222;
 const LONGITUDE_DELTA = ASPECT_RATIO * LATITUDE_DELTA;
 
+import { headerStyle } from '../Style';
+
 class CompatibleMenu extends Component {
 
     static navigationOptions = {
@@ -25,7 +27,7 @@ class CompatibleMenu extends Component {
             backgroundColor: '#388E3C',
         },
         headerTintColor: 'white',
-        headerTitleStyle: { color: 'white', fontFamily: 'Baskerville-BoldItalic', fontSize: 20 },
+        headerTitleStyle: headerStyle,
     }
 
     constructor(props) {
