@@ -314,8 +314,16 @@ class AllStore extends Component {
             longitude: this.state.region.longitude
         }
 
+        const shadowOpacity = {
+            shadowOpacity: 0.5,
+            shadowOffset: {
+                width: -5,
+                height: 5
+            }
+        }
+
         return (
-            <View style={styles.container}>
+            <View style={styles.container} >
                 <MapView
                     ref='map'
                     provider={PROVIDER_GOOGLE}
@@ -380,16 +388,19 @@ class AllStore extends Component {
                             />
                         </View>
                     </View>
-                </Modal>
+                </Modal >
 
-                <TouchableOpacity style={styles.floatingBtn} onPress={() => { this.toogleNearby() }}>
+                <TouchableOpacity style={[styles.floatingBtn, shadowOpacity]} onPress={() => { this.toogleNearby() }}>
                     <Image source={require('../../img/nearby.png')} style={{ width: width / 13, height: width / 13, resizeMode: 'contain' }} />
                 </TouchableOpacity>
 
-                {this.state.locationPermission != 'authorized' && <TouchableOpacity style={styles.floatingBtn2} onPress={() => { this._alertForLocationPermission() }}>
-                    <Icon name='gps-fixed' size={25} color='white' />
-                </TouchableOpacity>}
-                {!this.props.isConnected.isConnected &&
+                {
+                    this.state.locationPermission != 'authorized' && <TouchableOpacity style={styles.floatingBtn2} onPress={() => { this._alertForLocationPermission() }}>
+                        <Icon name='gps-fixed' size={25} color='white' />
+                    </TouchableOpacity>
+                }
+                {
+                    !this.props.isConnected.isConnected &&
                     <View style={styles.activityIndicator}>
                         <Text>Loading</Text>
                     </View>

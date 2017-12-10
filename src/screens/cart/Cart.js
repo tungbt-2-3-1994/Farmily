@@ -201,6 +201,14 @@ class Cart extends Component {
 
     render() {
 
+        const shadowOpacity = {
+            shadowOpacity: 0.5,
+            shadowOffset: {
+                width: -5,
+                height: 5
+            }
+        }
+
         var latlng = {
             latitude: this.state.region.latitude,
             longitude: this.state.region.longitude
@@ -361,7 +369,7 @@ class Cart extends Component {
                             </View>
                         </Modal>
 
-                        <TouchableOpacity style={styles.floatingBtn} onPress={() => { this.checkout() }}>
+                        <TouchableOpacity style={[styles.floatingBtn, shadowOpacity]} onPress={() => { this.checkout() }}>
                             <Icon name='credit-card' size={25} color='white' />
                         </TouchableOpacity>
 

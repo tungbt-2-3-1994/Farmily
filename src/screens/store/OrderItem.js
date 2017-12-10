@@ -221,8 +221,16 @@ class OrderItem extends Component {
     }
 
     render() {
+
+        const shadowOpacity = {
+            shadowOpacity: 0.5,
+            shadowOffset: {
+                width: -5,
+                height: 5
+            }
+        }
         const vegetableId = this.props.navigation.state.params.item.id;
-        console.log(vegetableId);
+
         const { onScroll = () => { } } = this.props;
         const { item } = this.props.navigation.state.params;
         return (
@@ -271,15 +279,9 @@ class OrderItem extends Component {
                         </View>
                     </View>
                 </ParallaxScrollView>
-                <TouchableOpacity style={styles.floatingBtn} onPress={() => { this.addItemToCart() }}>
+                <TouchableOpacity style={[styles.floatingBtn, shadowOpacity]} onPress={() => { this.addItemToCart() }}>
                     <Icon size={25} color='white' name='add-shopping-cart' />
                 </TouchableOpacity>
-                {/* <View style={styles.add}>
-                    <TouchableOpacity onPress={() => { this.addItemToCart() }} style={{ flexDirection: 'row', flex: 0.8, alignItems: 'center', justifyContent: 'center', backgroundColor: '#31A85E', borderRadius: 5 }}>
-                        <Icon size={20} color='white' name='add-shopping-cart' />
-                        <Text style={{ paddingLeft: 10, fontFamily: 'Baskerville-BoldItalic', color: 'white', fontSize: 20 }}>Thêm vào giỏ hàng</Text>
-                    </TouchableOpacity>
-                </View> */}
             </View>
         );
     }

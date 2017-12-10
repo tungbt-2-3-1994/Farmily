@@ -170,7 +170,14 @@ class Menu extends Component {
     }
 
     render() {
-        // console.log('re render')
+
+        const shadowOpacity = {
+            shadowOpacity: 0.5,
+            shadowOffset: {
+                width: -5,
+                height: 5
+            }
+        }
         return (
             <View style={{
                 flex: 1,
@@ -220,7 +227,7 @@ class Menu extends Component {
                                 horizontal={false}
                                 numColumns={2}
                             />
-                            <TouchableOpacity style={styles.floatingBtn} onPress={() => {
+                            <TouchableOpacity style={[styles.floatingBtn, shadowOpacity]} onPress={() => {
                                 this.getAvailableStore()
                             }}>
                                 <Icon name='shopping-cart' size={25} color='white' />
@@ -272,10 +279,6 @@ class Menu extends Component {
                                                 <Text style={{ fontSize: width / 16, textAlign: 'center', color: 'white' }}>Đồng ý</Text>
                                             </TouchableOpacity>
                                         </View>
-
-                                        {/* <TouchableOpacity style={styles.accept} onPress={() => this.updateCart()}>
-                                                <Text style={{ color: 'white', fontSize: 20, fontFamily: 'Baskerville-BoldItalic' }}>Đồng ý</Text>
-                                            </TouchableOpacity> */}
 
                                     </View>
                                 </View>
