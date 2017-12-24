@@ -20,6 +20,8 @@
     "react-native-image-slider": "^1.1.5",
     "react-native-maps": "^0.16.2",
     "react-native-material-bottom-navigation": "^0.5.1",
+    "react-native-modal-picker": "0.0.16",
+    "react-native-modalbox": "^1.4.2",
     "react-native-parallax-scroll-view": "^0.19.0",
     "react-native-permissions": "^1.0.1",
     "react-native-textinput-effects": "^0.4.2",
@@ -41,7 +43,7 @@
   },
   "rnpm": {
     "assets": [
-      "./assets/fonts/"
+      "./fonts/"
     ]
   }
 }

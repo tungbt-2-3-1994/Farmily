@@ -7,7 +7,7 @@ export const getCurrentLocation = () => {
     return (dispatch) => {
         navigator.geolocation.getCurrentPosition(
             (position) => {
-                console.log('123');
+                // console.log('123');
                 dispatch({
                     type: GET_CURRENT_LOCATION,
                     payload: position
@@ -15,13 +15,13 @@ export const getCurrentLocation = () => {
                 return;
             },
             (error) => {
-                console.log(error.message);
+                // console.log(error.message);
                 dispatch({
                     type: GET_CURRENT_LOCATION,
                     payload: { 'coords': null }
                 });
             },
-            { timeout: 4000, maximumAge: 1000 }
+            { enableHighAccuracy: false, timeout: 10000, maximumAge: 1000 }
         );
     }
 }

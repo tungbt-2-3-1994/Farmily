@@ -17,6 +17,8 @@ import { addItemToCart, updateItemInCartLocally } from '../../actions';
 
 import { InforF } from '../../components/StoreMap/InforF';
 
+import ModalPicker from 'react-native-modal-picker';
+
 const window = Dimensions.get('window');
 const PARALLAX_HEADER_HEIGHT = 9 * window.width / 16;
 const STICKY_HEADER_HEIGHT = 50;
@@ -123,7 +125,8 @@ class OrderItem extends Component {
             quantityInput: '',
             images: [],
             position: 0,
-            interval: null
+            interval: null,
+            textInputValue: ''
         }
     }
 
@@ -194,6 +197,7 @@ class OrderItem extends Component {
                         Alert.alert('Bạn cần nhập số lượng hàng hóa');
                     } else {
                         this.setState({ quantityInput: '' });
+                        this.refs.myPicker.initValue = 'Chọn số lượng';
                         this.props.addItemToCart(vegetableId, storeId, parseInt(this.state.quantityInput));
                     }
                 }
@@ -221,6 +225,23 @@ class OrderItem extends Component {
     }
 
     render() {
+
+        let index = 0;
+        const data = [
+            { key: index++, label: '1' },
+            { key: index++, label: '2' },
+            { key: index++, label: '3' },
+            { key: index++, label: '4' },
+            { key: index++, label: '5' },
+            { key: index++, label: '6' },
+            { key: index++, label: '7' },
+            { key: index++, label: '8' },
+            { key: index++, label: '9' },
+            { key: index++, label: '10' },
+            { key: index++, label: '20' },
+            { key: index++, label: '30' },
+        ];
+
 
         const shadowOpacity = {
             shadowOpacity: 0.5,
@@ -257,27 +278,25 @@ class OrderItem extends Component {
                             <Text style={{ fontSize: 16, textAlign: 'left', justifyContent: 'center', padding: 10 }}>{item.description}</Text>
                             <View style={styles.textContainer}>
                                 <Text style={styles.text}>Giá bán: </Text>
-                                <Text style={{ fontSize: 16, marginTop: 5 }}>{item.pivot.price} nghìn đồng/kg</Text>
+                                <Text style={{ fontSize: 16, marginTop: 5 }}>{item.pivot.price.toString().replace(/(\d)(?=(\d{3})+$)/g, '$1,')} nghìn đồng/kg</Text>
                             </View>
 
                             <View style={styles.textContainer}>
                                 <Text style={styles.text}>Số lượng: </Text>
-                                <View style={{ paddingTop: 15, flexDirection: 'row' }}>
-                                    <TextInput
-                                        style={{ fontSize: 16, textAlign: 'right', width: 150 }}
-                                        placeholder='Nhập số lượng'
-                                        keyboardType='numeric'
-                                        returnKeyType='done'
-                                        underlineColorAndroid='transparent'
-                                        onChangeText={(text) => { this.setState({ quantityInput: text }) }}
-                                        value={this.state.quantityInput}
-                                    />
-                                    {Platform.OS === 'android' && <Text style={{ paddingTop: 15, fontSize: 16 }}> kg</Text>}
-                                    {Platform.OS === 'ios' && <Text style={{ fontSize: 16 }}> kg</Text>}
+                                <View style={{ paddingTop: 15, flexDirection: 'row', alignSelf: 'center' }}>
+                                    <ModalPicker
+                                        ref='myPicker'
+                                        data={data}
+                                        initValue={this.state.quantityInput === '' ? "Chọn số lượng" : this.state.quantityInput}
+                                        onChange={(text) => { this.setState({ quantityInput: text.label }) }}
+                                        cancelText='Hủy' />
+                                    <Text style={{ paddingTop: 8, fontSize: 16 }}> kg</Text>
+
                                 </View>
                             </View>
                         </View>
                     </View>
+
                 </ParallaxScrollView>
                 <TouchableOpacity style={[styles.floatingBtn, shadowOpacity]} onPress={() => { this.addItemToCart() }}>
                     <Icon size={25} color='white' name='add-shopping-cart' />
@@ -322,7 +341,6 @@ const styles = {
         fontSize: 20,
         margin: 10,
         fontWeight: 'bold',
-        fontFamily: 'AvenirNext-HeavyItalic'
     },
     foreground: {
         width: window.width,

@@ -280,7 +280,6 @@ const styles = {
         fontSize: 20,
         margin: 10,
         fontWeight: 'bold',
-        fontFamily: 'AvenirNext-HeavyItalic'
     },
     foreground: {
         width: window.width,

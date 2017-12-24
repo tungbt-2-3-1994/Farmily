@@ -321,6 +321,16 @@ class AllStore extends Component {
                 height: 5
             }
         }
+        const innerShadowOpacity = {
+            shadowOpacity: 1,
+            shadowOffset: {
+                width: -5,
+                height: 5
+            },
+            shadowColor: 'black',
+            elevation: 20,
+            // shadowColor: 'red'
+        }
 
         return (
             <View style={styles.container} >
@@ -372,7 +382,7 @@ class AllStore extends Component {
                     <View
                         {...this.panResponder.panHandlers}
                         style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0, 0, 0, 0.4)' }}>
-                        <View style={{ width: width - 20, padding: 10, backgroundColor: 'white', marginLeft: 10, marginRight: 10 }}>
+                        <View style={[styles.innerContainer, innerShadowOpacity]}>
                             <Text style={{ paddingLeft: 10, fontSize: 16, color: 'black' }}>Các cửa hàng xung quanh bạn</Text>
                             <FlatList
                                 style={{ margin: 5 }}
@@ -390,7 +400,7 @@ class AllStore extends Component {
                     </View>
                 </Modal >
 
-                <TouchableOpacity style={[styles.floatingBtn, shadowOpacity]} onPress={() => { this.toogleNearby() }}>
+                <TouchableOpacity style={[styles.floatingBtn, innerShadowOpacity]} onPress={() => { this.toogleNearby() }}>
                     <Image source={require('../../img/nearby.png')} style={{ width: width / 13, height: width / 13, resizeMode: 'contain' }} />
                 </TouchableOpacity>
 
@@ -411,6 +421,9 @@ class AllStore extends Component {
 }
 
 const styles = {
+    innerContainer: {
+        width: width - 20, padding: 10, backgroundColor: 'white', marginLeft: 10, marginRight: 10, borderRadius: 10
+    },
     floatingBtn: { justifyContent: 'center', alignItems: 'center', position: 'absolute', right: 10, bottom: 10, width: width / 7, height: width / 7, borderRadius: width / 14, backgroundColor: '#388E3C' },
     flItem: { flex: 1, width: width, height: 40, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' },
     activityIndicator: {
