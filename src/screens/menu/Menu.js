@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 import { headerStyle } from '../Style';
 // import PopupDialog, { SlideAnimation, DialogTitle, DialogButton, } from 'react-native-popup-dialog';
 
-import { getAllVegetables, updateMenu, getCompatibleStore, getCompatibleStoreWithoutLocation } from '../../actions';
+import { updateMenu, getCompatibleStore, getCompatibleStoreWithoutLocation } from '../../actions';
 
 const { width, height } = Dimensions.get('window');
 
@@ -34,7 +34,6 @@ class Menu extends Component {
     }
 
     componentWillMount() {
-        // this.props.getAllVegetables();
         this.panResponder = PanResponder.create({
             onStartShouldSetPanResponder: (event, gestureState) => true,
             onPanResponderGrant: this._onPanRespondGrant.bind(this),
@@ -178,6 +177,18 @@ class Menu extends Component {
                 height: 5
             }
         }
+
+        const innerShadowOpacity = {
+            shadowOpacity: 0.5,
+            shadowOffset: {
+                width: -5,
+                height: 5
+            },
+            shadowColor: 'black',
+            elevation: 20,
+            // shadowColor: 'red'
+        }
+
         return (
             <View style={{
                 flex: 1,
@@ -246,7 +257,7 @@ class Menu extends Component {
                                 <View
                                     {...this.panResponder.panHandlers}
                                     style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0, 0, 0, 0.4)' }}>
-                                    <View style={{ width: width - 20, padding: 10, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 10 }}>
+                                    <View style={[styles.editForm, innerShadowOpacity]}>
                                         <Text style={{ textAlign: 'center', marginTop: 5 }}>
                                             <Text style={{ fontSize: 16 }}>Số lượng</Text>
                                             <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#388E3C' }}> {this.state.name} </Text>
@@ -295,6 +306,7 @@ class Menu extends Component {
 }
 
 const styles = {
+    editForm: { width: width - 20, padding: 10, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 10 },
     popupContainer: {
         flex: 1,
         alignItems: 'center',
@@ -345,4 +357,4 @@ const mapStateToProps = (state) => {
     });
 }
 
-export default connect(mapStateToProps, { getCompatibleStoreWithoutLocation, getAllVegetables, updateMenu, getCompatibleStore })(Menu);
+export default connect(mapStateToProps, { getCompatibleStoreWithoutLocation, updateMenu, getCompatibleStore })(Menu);

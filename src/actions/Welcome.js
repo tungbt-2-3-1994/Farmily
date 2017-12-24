@@ -14,3 +14,18 @@ export const goToMain = () => {
         dispatch(resetNavigator);
     }
 }
+
+export const goToIntroduce = () => {
+    return (dispatch) => {
+        const navigateAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({
+                    routeName: 'AppIntroduceScreen',
+                })
+            ],
+        });
+        dispatch(navigateAction)
+    }
+}
+

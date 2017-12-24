@@ -8,7 +8,8 @@ import {
     TouchableOpacity,
     TextInput,
     ScrollView,
-    Alert, Dimensions, NetInfo, StatusBar, AppState, BackHandler, Platform
+    Alert, Dimensions, NetInfo, StatusBar, AppState, BackHandler, Platform,
+    AsyncStorage
 } from 'react-native';
 
 import RNExitApp from 'react-native-exit-app';
@@ -19,9 +20,11 @@ import { connect } from 'react-redux';
 
 import Permissions from 'react-native-permissions';
 
+import { NavigationActions } from 'react-navigation';
+
 const { width } = Dimensions.get('window');
 
-import { getCheckoutCart, getCurrentLocation, getAllVegetables, getAllStores, goToMain, connectionState } from '../actions';
+import { getCheckoutCart, getCurrentLocation, getAllVegetables, getAllStores, goToMain, connectionState, goToIntroduce } from '../actions';
 
 class Welcome extends Component {
 
@@ -34,7 +37,8 @@ class Welcome extends Component {
         this.state = {
             loadingStatus: true,
             status: {},
-            types: []
+            types: [],
+            skip: false
         }
     }
 
@@ -54,68 +58,29 @@ class Welcome extends Component {
         this.props.getAllStores();
         this.props.getCurrentLocation();
         this.props.getAllVegetables();
-
     }
 
-    // _updatePermissions(types) {
-    //     Permissions.checkMultiple(types)
-    //         .then(status => {
-    //             if (this.state.isAlways) {
-    //                 return Permissions.check('location', 'always')
-    //                     .then(location => ({ ...status, location }))
-    //             }
-    //             return status
-    //         })
-    //         .then(status => this.setState({ status }))
-    // }
+    saveKey = async () => {
+        try {
+            await AsyncStorage.setItem('InitialKey', '1');
+        } catch (error) {
+            // Error retrieving data
+        }
+    }
 
-    // _requestPermission(permission) {
-    //     var options
-
-    //     if (permission == 'location') {
-    //         options = this.state.isAlways ? 'always' : 'whenInUse'
-    //     }
-
-    //     Permissions.request(permission, options)
-    //         .then(res => {
-    //             this.setState({
-    //                 status: { ...this.state.status, [permission]: res }
-    //             })
-    //             if (res != 'authorized') {
-    //                 var buttons = [{ text: 'Cancel', style: 'cancel' }]
-    //                 if (this.state.canOpenSettings) buttons.push({ text: 'Open Settings', onPress: this._openSettings.bind(this) })
-
-    //                 Alert.alert(
-    //                     'Whoops!',
-    //                     "There was a problem getting your permission. Please enable it from settings.",
-    //                     buttons
-    //                 )
-    //             }
-    //         }).catch(e => console.warn(e))
-    // }
-
-    // _onLocationSwitchChange() {
-    //     this.setState({ isAlways: !this.state.isAlways })
-    //     this._updatePermissions(this.state.types)
-    // }
-
-
-    // _alertForLocationPermission = () => {
-    //     Alert.alert(
-    //         'Yêu cầu quyền truy cập!',
-    //         'Ứng dụng cần truy cập vị trí của bạn!',
-    //         [
-    //             {
-    //                 text: 'Không', onPress: () => {
-    //                     (Platform.OS === 'ios') ? RNExitApp.exitApp() : BackHandler.exitApp();
-    //                 }
-    //             },
-    //             { text: 'Đồng ý', onPress: this._requestPermission() }
-    //         ]
-    //     )
-    // }
+    getKey = async () => {
+        try {
+            const value = await AsyncStorage.getItem('InitialKey');
+            if (value !== null) {
+                this.setState({ skip: true });
+            }
+        } catch (error) {
+            // Error retrieving data
+        }
+    }
 
     componentDidMount() {
+        this.getKey();
         NetInfo.isConnected.addEventListener('change', this._handleConnectionChange);
         setTimeout(() => {
             if (!this.props.isConnected.isConnected) {
@@ -129,13 +94,6 @@ class Welcome extends Component {
                 );
             }
         }, 5000);
-        // let types = Permissions.getTypes()
-        // console.log(types);
-        // let canOpenSettings = Permissions.canOpenSettings()
-
-        // this.setState({ types, canOpenSettings })
-        // this._updatePermissions(types)
-        // AppState.addEventListener('change', this._handleAppStateChange.bind(this));
     }
 
     componentWillUnmount() {
@@ -157,8 +115,12 @@ class Welcome extends Component {
             loadingStatus: nextProps.loadingVeget || nextProps.loadingGeo || nextProps.loadingStores
         });
         if (!nextProps.loadingVeget && !nextProps.loadingGeo && !nextProps.loadingStores) {
-            // console.log('asas');
-            this.props.goToMain();
+            if (this.state.skip === false) {
+                this.props.goToIntroduce();
+                this.saveKey();
+            } else {
+                this.props.goToMain();
+            }
         }
     }
 
@@ -259,4 +221,4 @@ const mapStateToProps = (state) => {
     });
 }
 
-export default connect(mapStateToProps, { getCheckoutCart, connectionState, goToMain, getCurrentLocation, getAllVegetables, getAllStores })(Welcome);
+export default connect(mapStateToProps, { goToIntroduce, getCheckoutCart, connectionState, goToMain, getCurrentLocation, getAllVegetables, getAllStores })(Welcome);

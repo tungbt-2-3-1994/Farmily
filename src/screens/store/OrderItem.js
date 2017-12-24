@@ -126,7 +126,6 @@ class OrderItem extends Component {
             images: [],
             position: 0,
             interval: null,
-            textInputValue: ''
         }
     }
 

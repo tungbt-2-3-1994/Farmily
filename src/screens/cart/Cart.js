@@ -209,6 +209,18 @@ class Cart extends Component {
             }
         }
 
+        const innerShadowOpacity = {
+            shadowOpacity: 0.5,
+            shadowOffset: {
+                width: -5,
+                height: 5
+            },
+            shadowColor: 'black',
+            elevation: 20,
+            // shadowColor: 'red'
+        }
+
+
         var latlng = {
             latitude: this.state.region.latitude,
             longitude: this.state.region.longitude
@@ -331,7 +343,7 @@ class Cart extends Component {
                             <View
                                 {...this.panResponder.panHandlers}
                                 style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0, 0, 0, 0.4)' }}>
-                                <View style={{ width: width - 20, padding: 10, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 10 }}>
+                                <View style={[styles.editForm, innerShadowOpacity]}>
                                     <Text style={{ textAlign: 'center', marginTop: 5 }}>
                                         <Text style={{ fontSize: 16 }}>Số lượng</Text>
                                         <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#388E3C' }}> {this.state.name} </Text>
@@ -373,12 +385,6 @@ class Cart extends Component {
                             <Icon name='credit-card' size={25} color='white' />
                         </TouchableOpacity>
 
-                        {/* <View style={styles.checkout}>
-                            <TouchableOpacity onPress={() => { this.checkout() }} style={{ flexDirection: 'row', flex: 0.8, alignItems: 'center', justifyContent: 'center', backgroundColor: '#31A85E', borderRadius: 5 }}>
-                                <Text style={{ paddingLeft: 10, fontFamily: 'Baskerville-BoldItalic', color: 'white', fontSize: 20 }}>Thanh toán</Text>
-                            </TouchableOpacity>
-                        </View> */}
-
                     </View>
                 )
                 :
@@ -392,6 +398,7 @@ class Cart extends Component {
 }
 
 const styles = {
+    editForm: { width: width - 20, padding: 10, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 10 },
     floatingBtn: { justifyContent: 'center', alignItems: 'center', position: 'absolute', right: 3 * width / 7, bottom: 10, width: width / 7, height: width / 7, borderRadius: width / 14, backgroundColor: '#388E3C' },
     pin: {
         backgroundColor: 'transparent',

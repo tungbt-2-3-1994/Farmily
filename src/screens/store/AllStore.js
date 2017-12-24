@@ -16,6 +16,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import SearchBox from '../../components/StoreMap/SearchBox';
 import { CalloutItem } from '../../components/StoreMap/Callout';
 
+
+
 import { getNearByStore, getCurrentLocation, getAllStores, searchStoreByAddOrInfo, toggleSearch } from '../../actions';
 import { untoggleSearch, connectionState } from '../../actions';
 
@@ -322,7 +324,7 @@ class AllStore extends Component {
             }
         }
         const innerShadowOpacity = {
-            shadowOpacity: 1,
+            shadowOpacity: 0.5,
             shadowOffset: {
                 width: -5,
                 height: 5
